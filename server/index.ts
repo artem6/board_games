@@ -37,9 +37,9 @@ app.post('/update', (req, res) => {
 });
 
 const server = http.createServer(app);
-// const wss = new WebSocket.Server({
-//   server,
-//   path: '/ws',
-// });
-// wss.on('connection', webSocketManager.connect);
+const wss = new WebSocket.Server({
+  server,
+  path: '/ws',
+});
+wss.on('connection', webSocketManager.connect);
 server.listen(PORT, () => console.log(`Listening on ${PORT}`));
