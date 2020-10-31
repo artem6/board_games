@@ -1,0 +1,19 @@
+{
+  "name": "boardgames",
+  "version": "1.0.0",
+  "description": "Board Game Server",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "src/server/index.ts",
+  "scripts": {
+    "start": "ts-node src/server/index.ts",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  }
+}
