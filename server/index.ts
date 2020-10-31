@@ -30,7 +30,7 @@ webSocketManager.registerPublisher(dataUpdatePublisher);
 app.post('/update', (req, res) => {
   try {
     const data = updateData(req.body);
-    res.json({ data });
+    res.json(data);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }

@@ -3,7 +3,7 @@
  * BROWSER ONLY
  *
  */
-import { config } from './config';
+import { config } from '../config';
 import { v1 } from 'uuid';
 
 const uuid = v1;

@@ -20,7 +20,7 @@ let publishers: {
 
 export const updateData = (val: DataType) => {
   if (!val.id) throw new Error('Missing id');
-  if (typeof val.version !== 'number') throw new Error('Version my be an integer');
+  if (typeof val.version !== 'number') throw new Error('Version must be an integer');
 
   const key = `EntityChange:${val.id}`;
   console.log('change', key);
@@ -28,7 +28,7 @@ export const updateData = (val: DataType) => {
   if (!allData[key]) allData[key] = val;
   else {
     if (allData[key].version !== val.version) {
-      throw new Error('Version Mismatch');
+      return { status: 'failure', data: allData[key] };
     }
     allData[key] = { ...val, version: val.version + 1 };
   }
@@ -36,7 +36,7 @@ export const updateData = (val: DataType) => {
 
   publishers[key]?.messageAllSubscribers(data);
 
-  return data;
+  return { status: 'success', data };
 };
 
 class EntityUpdatePublisher implements Publisher {
