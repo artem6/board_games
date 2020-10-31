@@ -5,6 +5,7 @@
     "node": "12.x"
   },
   "main": "server/index.ts",
+  "homepage": "https://artem6.github.io/board_games/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
