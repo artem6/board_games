@@ -1,34 +1,123 @@
-.greenCard {
-  background: #55cc55;
+.mainContainer {
   text-align: center;
-  display: inline-flex;
+}
+
+.cardContainer {
+  display: inline-block;
+  text-align: center;
+  margin: 10px;
+}
+
+.greenCard {
+  border: 10px solid #32cd32;
+  display: flex;
   width: 150px;
   height: 200px;
   border-radius: 8px;
-  margin: 20px;
-  padding: 8px;
+  padding: 16px;
+  overflow: hidden;
   box-sizing: border-box;
-  box-shadow: 4px 4px 13px -6px rgba(0, 0, 0, 0.75);
+  /* box-shadow: 4px 4px 13px -6px rgba(0, 0, 0, 0.75); */
+  user-select: none;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.greenCard.selected {
+  background: #32cd32;
+  color: #fff;
+  /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
+}
+
+.main {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.flavor {
+  font-size: 14px;
 }
 
 .greenCard:hover {
-  box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75);
+  /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
 }
 
 .redCard {
-  background: #fb685d;
-  text-align: center;
-  display: inline-flex;
+  border: 10px solid #ff6347;
+  display: flex;
   width: 150px;
   height: 200px;
   border-radius: 8px;
-  margin: 20px;
-  padding: 8px;
+  padding: 16px;
+  overflow: hidden;
   box-sizing: border-box;
-  box-shadow: 4px 4px 13px -6px rgba(0, 0, 0, 0.75);
+  /* box-shadow: 4px 4px 13px -6px rgba(0, 0, 0, 0.75); */
+  user-select: none;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  hyphens: auto;
   cursor: pointer;
+}
+.redCard.selected {
+  background: #ff6347;
+  color: #fff;
+  /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
 }
 
 .redCard:hover {
-  box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75);
+  /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
+}
+
+.gameStartTable {
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.gameStartTable input {
+  width: 200px;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.resultsTable {
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto;
+}
+.resultsTable .left {
+  text-align: left;
+  width: 80%;
+}
+.resultsTable .right {
+  text-align: right;
+  width: 20%;
+  min-width: 50px;
+}
+
+.playerSection {
+  margin-top: 200px;
+  vertical-align: top;
+}
+.playerSection .playerAvatar {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 8px;
+  cursor: default;
+}
+
+.playerAvatar .score {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s;
+}
+
+.playerAvatar:hover .score {
+  height: 50px;
 }

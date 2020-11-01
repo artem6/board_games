@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './apples.module.css';
 
 import { getQueryParams, setQueryParams } from '../utils/queryParams';
 
@@ -13,15 +14,20 @@ export const ApplesGameStart = ({ onSubmit }: PropType) => {
 
   return (
     <div>
-      <div>
-        Game Code:
-        <input type='text' value={gameName} onChange={(e) => setGameName(e.target.value)} />
-      </div>
-
-      <div>
-        Your Name:
-        <input type='text' value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
-      </div>
+      <table className={styles.gameStartTable}>
+        <tr>
+          <td>Game Code:</td>
+          <td>
+            <input type='text' value={gameName} onChange={(e) => setGameName(e.target.value)} />
+          </td>
+        </tr>
+        <tr>
+          <td>Your Name:</td>
+          <td>
+            <input type='text' value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
+          </td>
+        </tr>
+      </table>
       <div>
         <button
           onClick={() => {

@@ -30,9 +30,10 @@ export const updateData = (val: DataType) => {
     if (allData[key].version !== val.version) {
       return { status: 'failure', data: allData[key] };
     }
-    allData[key] = { ...val, version: val.version + 1 };
+    allData[key] = val;
   }
   const data = allData[key];
+  data.version++;
 
   publishers[key]?.messageAllSubscribers(data);
 
