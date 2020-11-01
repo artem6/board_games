@@ -117,6 +117,9 @@
   overflow: hidden;
   transition: all 0.5s;
 }
+.playerAvatar.ready {
+  background: #6eb96c;
+}
 
 .playerAvatar:hover .score {
   height: 50px;

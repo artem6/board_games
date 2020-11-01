@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { useServerData } from '../utils/useServerData';
-import { getQueryParams } from '../utils/queryParams';
 import { ApplesGameStart } from './applesGameStart';
 import { updateData } from '../utils/updateData';
 import deepCopy from '../utils/deepCopy';
@@ -29,9 +28,9 @@ export const Apples = () => {
 
   const data: ApplesData = useServerData(gameName);
 
-  const stage = !gameName || !playerName ? 'name' : data?.stage;
-
   const players = data?.players || [];
+  const stage = !gameName || !playerName ? 'name' : players.length < 3 ? 'waiting' : data?.stage;
+
   const isLeader = players[0] === playerName;
   const chosenCard = data?.chosenCard || '';
   const myCards = data?.playerCards?.[playerName] || [];
@@ -53,13 +52,14 @@ export const Apples = () => {
 
   useEffect(() => {
     if (gameName && playerName && data?.players?.length) {
-      if (data.players.indexOf(playerName) === -1) setGameName('');
+      if (data.players.indexOf(playerName) === -1 && data?.playerScore?.[playerName])
+        setGameName('');
     }
-  }, [gameName, data]);
+  }, [gameName, playerName, data]);
 
   useEffect(() => {
     if (!isLeader) return;
-    if (stage === 'carding' && selectedCards.length === players.length) {
+    if (stage === 'carding' && selectedCards.length === players.length && players.length >= 3) {
       const setVotingStage = (data: ApplesData) => {
         data = deepCopy(data);
         data.stage = 'voting';
@@ -80,6 +80,7 @@ export const Apples = () => {
   return (
     <div style={{ textAlign: 'center' }}>
       <h1>Apples to Apples</h1>
+      {stage === 'waiting' ? 'Waiting for more players' : null}
       {stage === 'name' ? (
         <ApplesGameStart
           onSubmit={(game, player) => {
@@ -128,6 +129,7 @@ export const Apples = () => {
 
       {stage === 'voting' ? (
         <ApplesVoteCard
+          player={playerName}
           chosenCard={chosenCard}
           votingCards={selectedCards}
           mySelectedCard={data.playerVotedPlayer[playerName] || ''}
@@ -179,7 +181,17 @@ export const Apples = () => {
 
       <div className={styles.playerSection}>
         {players.map((player) => (
-          <div key={player} className={styles.playerAvatar}>
+          <div
+            key={player}
+            className={
+              styles.playerAvatar +
+              ' ' +
+              ((stage === 'carding' && data?.playerChosenCard?.[player]) ||
+              (stage === 'voting' && data?.playerVotedPlayer?.[player])
+                ? styles.ready
+                : '')
+            }
+          >
             <span>{player}</span>
             <div className={styles.score}>
               <div>{data?.playerScore?.[player] || '0'}</div>
