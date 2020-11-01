@@ -79,7 +79,7 @@ export const Apples = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h1>Apples to Apples</h1>
+      <h1>Apples</h1>
       {stage === 'waiting' ? 'Waiting for more players' : null}
       {stage === 'name' ? (
         <ApplesGameStart
