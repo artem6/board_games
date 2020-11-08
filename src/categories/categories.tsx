@@ -219,7 +219,6 @@ export const Categories = () => {
                       data = deepCopy(data);
                       data.players = data.players.filter((p) => p !== player);
                       delete data.playerWords[player];
-                      delete data.playerWordsVotes[player];
                       return data;
                     };
                     updateData(kick(data), kick);
