@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './apples.module.css';
-import { ApplesCard, getApplesCardText } from './applesCard';
+import styles from './pears.module.css';
+import { PearsCard, getPearsCardText } from './pearsCard';
 
 interface PropType {
   chosenCard: string;
@@ -8,12 +8,12 @@ interface PropType {
   onContinue?: () => unknown;
 }
 
-export const ApplesResultsView = ({ chosenCard, votingCards, onContinue }: PropType) => {
+export const PearsResultsView = ({ chosenCard, votingCards, onContinue }: PropType) => {
   const sorted = [...votingCards];
   sorted.sort((a, b) => b.votes - a.votes);
   return (
     <div className={styles.mainContainer}>
-      <ApplesCard color='green' text={chosenCard} />
+      <PearsCard color='green' text={chosenCard} />
       <br />
       <br />
       <br />
@@ -23,7 +23,7 @@ export const ApplesResultsView = ({ chosenCard, votingCards, onContinue }: PropT
         {sorted.map((card) => (
           <tr>
             <td className={styles.left}>
-              <span className={styles.main}>{getApplesCardText(card.card).main}</span>
+              <span className={styles.main}>{getPearsCardText(card.card).main}</span>
               <span className={styles.flavor}> ({card.player})</span>
             </td>
             <td className={styles.right}>{card.votes}</td>

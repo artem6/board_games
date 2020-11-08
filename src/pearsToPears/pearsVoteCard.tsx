@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './apples.module.css';
-import { ApplesCard } from './applesCard';
+import styles from './pears.module.css';
+import { PearsCard } from './pearsCard';
 
 interface PropType {
   player: string;
@@ -10,7 +10,7 @@ interface PropType {
   onSelect: (player: string) => unknown;
 }
 
-export const ApplesVoteCard = ({
+export const PearsVoteCard = ({
   chosenCard,
   votingCards,
   mySelectedCard,
@@ -19,14 +19,14 @@ export const ApplesVoteCard = ({
 }: PropType) => {
   return (
     <div className={styles.mainContainer}>
-      <ApplesCard color='green' text={chosenCard} />
+      <PearsCard color='green' text={chosenCard} />
       <br />
       <br />
       <br />
       <br />
       <h1>Vote for your favorite</h1>
       {votingCards.map((card) => (
-        <ApplesCard
+        <PearsCard
           color='red'
           selected={mySelectedCard === card.player}
           onClick={() => player !== card.player && onSelect(card.player)}

@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './apples.module.css';
-import { ApplesCard } from './applesCard';
+import styles from './pears.module.css';
+import { PearsCard } from './pearsCard';
 
 interface PropType {
   chosenCard: string;
@@ -9,17 +9,17 @@ interface PropType {
   onSelect: (card: string) => unknown;
 }
 
-export const ApplesSelectCard = ({ chosenCard, myCards, mySelectedCard, onSelect }: PropType) => {
+export const PearsSelectCard = ({ chosenCard, myCards, mySelectedCard, onSelect }: PropType) => {
   return (
     <div className={styles.mainContainer}>
-      <ApplesCard color='green' text={chosenCard} />
+      <PearsCard color='green' text={chosenCard} />
       <br />
       <br />
       <br />
       <br />
       <h1>Select a card from your hand</h1>
       {myCards.map((card) => (
-        <ApplesCard
+        <PearsCard
           color='red'
           selected={mySelectedCard === card}
           onClick={() => onSelect(card)}

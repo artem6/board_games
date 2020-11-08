@@ -69,20 +69,6 @@
   /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
 }
 
-.gameStartTable {
-  width: 100%;
-  max-width: 400px;
-  margin: 30px auto;
-  font-size: 20px;
-  margin-bottom: 30px;
-}
-
-.gameStartTable input {
-  width: 200px;
-  font-size: 20px;
-  padding: 10px;
-}
-
 .resultsTable {
   width: 100%;
   max-width: 400px;

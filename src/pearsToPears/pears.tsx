@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useServerData } from '../utils/useServerData';
-import { ApplesGameStart } from './applesGameStart';
+import { GameStart } from '../common/gameStart';
 import { updateData } from '../utils/updateData';
 import deepCopy from '../utils/deepCopy';
 import { getGreenCard, getNewHand, getRedCard } from './cards';
-import { ApplesSelectCard } from './applesSelectCard';
-import { ApplesVoteCard } from './applesVoteCard';
-import { ApplesResultsView } from './applesResultsView';
-import styles from './apples.module.css';
+import { PearsSelectCard } from './pearsSelectCard';
+import { PearsVoteCard } from './pearsVoteCard';
+import { PearsResultsView } from './pearsResultsView';
+import styles from './pears.module.css';
 
-interface ApplesData {
+interface PearsData {
   id: string;
   version: number;
   players: string[];
@@ -22,13 +22,13 @@ interface ApplesData {
   playerScore: { [player: string]: number };
 }
 
-export const Apples = () => {
+export const Pears = () => {
   const [gameName, setGameName] = useState('');
   const [playerName, setPlayerName] = useState('');
 
-  const data: ApplesData = useServerData(gameName);
+  const data: PearsData = useServerData(gameName);
 
-  const players = data?.players || [];
+  const players = useMemo(() => data?.players || [], [data]);
   const stage = !gameName || !playerName ? 'name' : players.length < 3 ? 'waiting' : data?.stage;
 
   const isLeader = players[0] === playerName;
@@ -60,7 +60,7 @@ export const Apples = () => {
   useEffect(() => {
     if (!isLeader) return;
     if (stage === 'carding' && selectedCards.length === players.length && players.length >= 3) {
-      const setVotingStage = (data: ApplesData) => {
+      const setVotingStage = (data: PearsData) => {
         data = deepCopy(data);
         data.stage = 'voting';
         return data;
@@ -68,7 +68,7 @@ export const Apples = () => {
       updateData(setVotingStage(data), setVotingStage);
     }
     if (stage === 'voting' && totalVotes === players.length) {
-      const setNewRound = (data: ApplesData) => {
+      const setNewRound = (data: PearsData) => {
         data = deepCopy(data);
         data.stage = 'results';
         return data;
@@ -79,13 +79,13 @@ export const Apples = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h1>Apples</h1>
+      <h1>Pears to Pears</h1>
       {stage === 'waiting' ? 'Waiting for more players' : null}
       {stage === 'name' ? (
-        <ApplesGameStart
+        <GameStart
           onSubmit={(game, player) => {
-            const startGame = (data: ApplesData | null) => {
-              if (!data) data = {} as ApplesData;
+            const startGame = (data: PearsData | null) => {
+              if (!data) data = {} as PearsData;
               data = deepCopy(data);
               if (!data.id) data.id = game;
               if (!data.version) data.version = 0;
@@ -112,12 +112,12 @@ export const Apples = () => {
         />
       ) : null}
       {stage === 'carding' ? (
-        <ApplesSelectCard
+        <PearsSelectCard
           chosenCard={chosenCard}
           myCards={myCards}
           mySelectedCard={data.playerChosenCard[playerName] || ''}
           onSelect={(card: string) => {
-            const selectCard = (data: ApplesData) => {
+            const selectCard = (data: PearsData) => {
               data = deepCopy(data);
               data.playerChosenCard[playerName] = card;
               return data;
@@ -128,13 +128,13 @@ export const Apples = () => {
       ) : null}
 
       {stage === 'voting' ? (
-        <ApplesVoteCard
+        <PearsVoteCard
           player={playerName}
           chosenCard={chosenCard}
           votingCards={selectedCards}
           mySelectedCard={data.playerVotedPlayer[playerName] || ''}
           onSelect={(player: string) => {
-            const votePlayer = (data: ApplesData) => {
+            const votePlayer = (data: PearsData) => {
               data = deepCopy(data);
               data.playerVotedPlayer[playerName] = player;
               return data;
@@ -145,13 +145,13 @@ export const Apples = () => {
       ) : null}
 
       {stage === 'results' ? (
-        <ApplesResultsView
+        <PearsResultsView
           chosenCard={chosenCard}
           votingCards={selectedCards}
           onContinue={
             isLeader
               ? () => {
-                  const nextRound = (data: ApplesData) => {
+                  const nextRound = (data: PearsData) => {
                     data = deepCopy(data);
                     data.stage = 'carding';
                     data.chosenCard = getGreenCard();
@@ -198,7 +198,7 @@ export const Apples = () => {
               {isLeader ? (
                 <div
                   onClick={() => {
-                    const kick = (data: ApplesData) => {
+                    const kick = (data: PearsData) => {
                       data = deepCopy(data);
                       data.players = data.players.filter((p) => p !== player);
                       delete data.playerVotedPlayer[player];

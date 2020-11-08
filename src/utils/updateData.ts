@@ -1,6 +1,6 @@
 import { config } from '../config';
 
-export const updateData = async <T>(data: T, updateFn: { (d: T): T }, retries = 3): Promise<T> => {
+export const updateData = async <T>(data: T, updateFn: { (d: T): T }, retries = 5): Promise<T> => {
   const res = await fetch(`${config('API_HOST')}update`, {
     method: 'POST',
     headers: {

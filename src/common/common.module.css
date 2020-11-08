@@ -1,0 +1,13 @@
+.gameStartTable {
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.gameStartTable input {
+  width: 200px;
+  font-size: 20px;
+  padding: 10px;
+}

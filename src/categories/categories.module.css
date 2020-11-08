@@ -1,0 +1,33 @@
+.enterWord {
+  width: 200px;
+  font-size: 20px;
+  padding: 10px;
+  margin: 4px;
+}
+
+.playerSection {
+  margin-top: 200px;
+  vertical-align: top;
+}
+.playerSection .playerAvatar {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 8px;
+  cursor: default;
+}
+
+.playerAvatar .score {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s;
+}
+.playerAvatar.ready {
+  background: #6eb96c;
+}
+
+.playerAvatar:hover .score {
+  height: 50px;
+}
