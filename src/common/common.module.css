@@ -11,3 +11,48 @@
   font-size: 20px;
   padding: 10px;
 }
+
+.winnerScoreboard {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.winnerScoreboard .player {
+  text-align: left;
+  font-weight: bold;
+}
+
+.winnerScoreboard .score {
+  text-align: right;
+}
+
+.header {
+  height: 40px;
+  background: #4a4aab;
+  color: white;
+  font-size: 24px;
+  display: flex;
+}
+
+.header .back {
+  position: absolute;
+  left: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+.header .back a {
+  color: white;
+  text-decoration: none;
+}
+
+.header .title {
+  margin: auto;
+}
+
+.header .info {
+  position: absolute;
+  font-size: 18px;
+  right: 20px;
+  height: 40px;
+  line-height: 40px;
+}

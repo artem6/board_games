@@ -6,9 +6,9 @@ export const getCategory = () => {
   return categories[Math.floor(Math.random() * categories.length)];
 };
 
-export const getSomeCategories = () => {
+export const getSomeCategories = (catQty: number) => {
   const cats: string[] = [];
-  for (let i = 0; i < 5; i++) cats.push(getCategory());
+  for (let i = 0; i < catQty; i++) cats.push(getCategory());
   return cats;
 };
 

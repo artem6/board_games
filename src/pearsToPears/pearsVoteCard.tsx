@@ -29,7 +29,9 @@ export const PearsVoteCard = ({
         <PearsCard
           color='red'
           selected={mySelectedCard === card.player}
-          onClick={() => player !== card.player && onSelect(card.player)}
+          onClick={() =>
+            (player !== card.player || votingCards.length === 1) && onSelect(card.player)
+          }
           key={card.player}
           text={card.card}
           player={card.player}

@@ -6,14 +6,22 @@ import { updateData } from '../utils/updateData';
 import deepCopy from '../utils/deepCopy';
 
 import styles from './categories.module.css';
-import { getLetter, getSomeCategories } from './logic';
+import { getLetter, getSomeCategories } from './categoriesLogic';
 import { Timer } from '../common/Timer';
+import { gameUrl } from '../utils/paths';
+import { RouteComponentProps } from 'react-router';
+import { WinnerScoreboard } from '../common/Winner';
+import { Header } from '../common/Header';
 
 const ROUND_DURATION = 60 * 1000;
+const CATEGORIES_PER_ROUND = 5;
+const MAX_ROUNDS = 10;
 
 const createGame = (playerName: string, gameId: string) => (data: CategoriesData | null) => {
   if (!data) data = {} as CategoriesData;
   data = deepCopy(data);
+  if (!data.gameType) data.gameType = 'categories';
+  if (data.gameType !== 'categories') window.location.href = '/board_games';
   if (!data.id) data.id = gameId;
   if (!data.version) data.version = 0;
   if (!data.players) data.players = [];
@@ -22,6 +30,7 @@ const createGame = (playerName: string, gameId: string) => (data: CategoriesData
   if (!data.playerWords) data.playerWords = {};
   if (!data.rejectedWords) data.rejectedWords = {};
   if (!data.playerScore) data.playerScore = {};
+  if (!data.roundNumber) data.roundNumber = 0;
 
   if (data.players.indexOf(playerName) === -1) {
     data.players.push(playerName);
@@ -29,12 +38,13 @@ const createGame = (playerName: string, gameId: string) => (data: CategoriesData
   return data;
 };
 
-const startGame = (data: CategoriesData) => {
+const startRound = (data: CategoriesData) => {
   data = deepCopy(data);
   // add points
   Object.keys(data.playerWords).forEach((player) => {
     data.playerWords[player]?.forEach((word, idx) => {
       if (data.rejectedWords[idx + word]) return;
+      if (!(word || '').replace(/ /g, '')) return;
       data.playerScore[player] = data.playerScore[player] || 0;
       data.playerScore[player] += 1;
     });
@@ -43,10 +53,13 @@ const startGame = (data: CategoriesData) => {
   // reset the board
   data.playerWords = {};
   data.rejectedWords = {};
-  data.chosenCategories = getSomeCategories();
+  data.chosenCategories = getSomeCategories(CATEGORIES_PER_ROUND);
   data.chosenLetter = getLetter();
   data.endTime = Date.now() + ROUND_DURATION;
   data.stage = 'playing';
+  if (data.roundNumber < MAX_ROUNDS) data.roundNumber++;
+  else data.stage = 'results';
+
   return data;
 };
 const startVoting = (data: CategoriesData) => {
@@ -67,6 +80,7 @@ const rejectWord = (idx: number, word: string) => (data: CategoriesData) => {
 };
 
 interface CategoriesData {
+  gameType: 'categories';
   id: string;
   version: number;
   players: string[];
@@ -80,9 +94,12 @@ interface CategoriesData {
   rejectedWords: { [catWord: string]: boolean };
 
   playerScore: { [player: string]: number };
+  roundNumber: number;
 }
 
-export const Categories = () => {
+interface PropType extends RouteComponentProps {}
+
+export const Categories = ({ history }: PropType) => {
   const [gameName, setGameName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [myWords, setMyWords] = useState<string[]>([]);
@@ -92,6 +109,12 @@ export const Categories = () => {
   const players = data?.players || [];
   const isLeader = players[0] === playerName;
   const stage = !gameName || !playerName ? 'name' : data?.stage;
+
+  // game changed
+  useEffect(() => {
+    if (data.gameType && data.gameType !== 'categories')
+      history.push(gameUrl(data.gameType, gameName, playerName));
+  }, [data]);
 
   // you were kicked
   useEffect(() => {
@@ -119,8 +142,8 @@ export const Categories = () => {
     setMyWords([]);
   }, [data, myWords, playerName, stage]);
 
-  const startRound = () => {
-    updateData(startGame(data), startGame);
+  const startAndEndRound = () => {
+    updateData(startRound(data), startRound);
     setTimeout(() => {
       updateData(startVoting(data), startVoting);
     }, ROUND_DURATION);
@@ -128,7 +151,7 @@ export const Categories = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h1>Categories Game</h1>
+      <Header title='Categories' infoText={`Round ${data.roundNumber || 0}/${MAX_ROUNDS}`} />
       {stage === 'name' ? (
         <GameStart
           onSubmit={(game, player) => {
@@ -139,8 +162,18 @@ export const Categories = () => {
           }}
         />
       ) : null}
-      {stage === 'waiting' ? 'Waiting for more players' : null}
-      {stage === 'waiting' && isLeader ? <button onClick={startRound}>Start Game</button> : null}
+
+      {stage === 'waiting' ? (
+        <div>
+          Waiting for more players.
+          <br />
+          <br />
+          <br />
+        </div>
+      ) : null}
+      {stage === 'waiting' && isLeader ? (
+        <button onClick={startAndEndRound}>Start Game</button>
+      ) : null}
 
       {stage === 'playing' ? (
         <div>
@@ -151,7 +184,7 @@ export const Categories = () => {
               <input
                 className={styles.enterWord}
                 type={'text'}
-                placeholder={data.chosenLetter}
+                // placeholder={data.chosenLetter}
                 value={myWords[idx] || ''}
                 onChange={(e) => {
                   const words = [...myWords];
@@ -200,11 +233,23 @@ export const Categories = () => {
             </div>
           ))}
 
-          <button onClick={startRound}>Next Round</button>
+          {isLeader ? (
+            data.roundNumber < MAX_ROUNDS ? (
+              <button onClick={startAndEndRound}>Next Round</button>
+            ) : (
+              <button
+                onClick={() => {
+                  updateData(startRound(data), startRound);
+                }}
+              >
+                Show Results
+              </button>
+            )
+          ) : null}
         </div>
       ) : null}
 
-      {stage === 'results' ? <div>results</div> : null}
+      {stage === 'results' ? <WinnerScoreboard playerScore={data.playerScore} /> : null}
 
       <div className={styles.playerSection}>
         {players.map((player) => (

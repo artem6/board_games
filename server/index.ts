@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as WebSocket from 'ws';
 import cors from 'cors';
 import webSocketManager from './websocketManager';
-import { dataUpdatePublisher, updateData } from './data';
+import { dataUpdatePublisher, getData, updateData } from './data';
 const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 5000;
@@ -26,6 +26,15 @@ app.get('/', (req, res) => {
 });
 
 webSocketManager.registerPublisher(dataUpdatePublisher);
+
+app.get('/get/:id', (req, res) => {
+  try {
+    const data = getData(req.params.id);
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 app.post('/update', (req, res) => {
   try {

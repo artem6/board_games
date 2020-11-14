@@ -3,12 +3,23 @@ import { Publisher } from './websocketManager';
 interface DataType {
   id: string;
   version: number;
+  lastUpdated: number;
 }
 
 const allData: { [id: string]: DataType } = {};
 
-const getData = (id: string) => {
-  return allData[id] || { id: id.replace('EntityChange:', ''), version: 0 };
+// clean up old games
+setInterval(() => {
+  Object.keys(allData).forEach((key) => {
+    if (allData[key] && allData[key].lastUpdated + 30 * 60 * 1000 < Date.now()) delete allData[key];
+  });
+}, 60 * 1000);
+
+export const getData = (id: string) => {
+  return (
+    allData[id] ||
+    allData['EntityChange:' + id] || { id: id.replace('EntityChange:', ''), version: 0 }
+  );
 };
 
 let publishers: {
@@ -34,6 +45,7 @@ export const updateData = (val: DataType) => {
   }
   const data = allData[key];
   data.version++;
+  data.lastUpdated = Date.now();
 
   publishers[key]?.messageAllSubscribers(data);
 

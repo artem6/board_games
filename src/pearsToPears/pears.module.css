@@ -69,6 +69,23 @@
   /* box-shadow: 4px 4px 21px -1px rgba(0, 0, 0, 0.75); */
 }
 
+.blueCard {
+  border: 10px solid #6068f7;
+  display: flex;
+  width: 150px;
+  height: 200px;
+  border-radius: 8px;
+  padding: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* box-shadow: 4px 4px 13px -6px rgba(0, 0, 0, 0.75); */
+  user-select: none;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  cursor: pointer;
+}
+
 .resultsTable {
   width: 100%;
   max-width: 400px;

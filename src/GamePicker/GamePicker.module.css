@@ -1,0 +1,24 @@
+.mainContainer {
+  text-align: center;
+}
+
+.card {
+  display: inline-block;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #9e9e9e;
+  color: #9e9e9e;
+  border-radius: 8px;
+  margin: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.card img {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+.card:hover {
+  box-shadow: 3px 3px 13px -8px rgba(0, 0, 0, 0.75);
+}

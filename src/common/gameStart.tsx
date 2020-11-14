@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './common.module.css';
 
 import { getQueryParams, setQueryParams } from '../utils/queryParams';
 
 interface PropType {
   onSubmit: (game: string, player: string) => unknown;
+  cta?: string;
 }
 
-export const GameStart = ({ onSubmit }: PropType) => {
+export const GameStart = ({ onSubmit, cta }: PropType) => {
   const params = getQueryParams();
   const [gameName, setGameName] = useState(params.game || '');
   const [playerName, setPlayerName] = useState(params.player || '');
+
+  useEffect(() => {
+    if (params.start && params.game && params.player) {
+      onSubmit(params.game, params.player);
+    }
+  }, [params]);
 
   return (
     <div>
@@ -44,7 +51,7 @@ export const GameStart = ({ onSubmit }: PropType) => {
             onSubmit(gameName, playerName);
           }}
         >
-          Start
+          {cta || 'Start'}
         </button>
       </div>
     </div>

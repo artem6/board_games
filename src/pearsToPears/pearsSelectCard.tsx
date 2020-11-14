@@ -7,9 +7,21 @@ interface PropType {
   myCards: string[];
   mySelectedCard: string;
   onSelect: (card: string) => unknown;
+
+  resetsAvailable: number;
+  maxResets: number;
+  onResetHand: () => unknown;
 }
 
-export const PearsSelectCard = ({ chosenCard, myCards, mySelectedCard, onSelect }: PropType) => {
+export const PearsSelectCard = ({
+  chosenCard,
+  myCards,
+  mySelectedCard,
+  onSelect,
+  resetsAvailable,
+  maxResets,
+  onResetHand,
+}: PropType) => {
   return (
     <div className={styles.mainContainer}>
       <PearsCard color='green' text={chosenCard} />
@@ -27,6 +39,14 @@ export const PearsSelectCard = ({ chosenCard, myCards, mySelectedCard, onSelect 
           text={card}
         />
       ))}
+      {resetsAvailable > 0 ? (
+        <PearsCard
+          color='blue'
+          selected={false}
+          onClick={() => onResetHand()}
+          text={`Draw New Cards - draws left ${resetsAvailable}/${maxResets}`}
+        />
+      ) : null}
     </div>
   );
 };

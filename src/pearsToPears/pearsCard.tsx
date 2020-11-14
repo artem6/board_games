@@ -3,7 +3,7 @@ import styles from './pears.module.css';
 
 interface PropType {
   text: string;
-  color: 'red' | 'green';
+  color: 'red' | 'green' | 'blue';
   selected?: boolean;
   player?: string;
   onClick?: () => unknown;
@@ -24,7 +24,11 @@ export const PearsCard = ({ text, color, player, selected, onClick }: PropType) 
     <div onClick={onClick} className={styles.cardContainer}>
       <div
         className={
-          (color === 'red' ? styles.redCard : styles.greenCard) +
+          (color === 'red'
+            ? styles.redCard
+            : color === 'green'
+            ? styles.greenCard
+            : styles.blueCard) +
           ' ' +
           (selected ? styles.selected : '')
         }

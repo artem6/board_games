@@ -1,22 +1,24 @@
 {
   "files": {
-    "main.css": "/board_games/static/css/main.254f7452.chunk.css",
-    "main.js": "/board_games/static/js/main.370811bf.chunk.js",
-    "main.js.map": "/board_games/static/js/main.370811bf.chunk.js.map",
-    "runtime-main.js": "/board_games/static/js/runtime-main.04e19362.js",
-    "runtime-main.js.map": "/board_games/static/js/runtime-main.04e19362.js.map",
-    "static/js/2.a94ca31f.chunk.js": "/board_games/static/js/2.a94ca31f.chunk.js",
-    "static/js/2.a94ca31f.chunk.js.map": "/board_games/static/js/2.a94ca31f.chunk.js.map",
-    "static/js/3.fca2bf26.chunk.js": "/board_games/static/js/3.fca2bf26.chunk.js",
-    "static/js/3.fca2bf26.chunk.js.map": "/board_games/static/js/3.fca2bf26.chunk.js.map",
+    "main.css": "/board_games/static/css/main.21379fea.chunk.css",
+    "main.js": "/board_games/static/js/main.87e519b8.chunk.js",
+    "main.js.map": "/board_games/static/js/main.87e519b8.chunk.js.map",
+    "runtime-main.js": "/board_games/static/js/runtime-main.5a4925a3.js",
+    "runtime-main.js.map": "/board_games/static/js/runtime-main.5a4925a3.js.map",
+    "static/js/2.32a0aa2d.chunk.js": "/board_games/static/js/2.32a0aa2d.chunk.js",
+    "static/js/2.32a0aa2d.chunk.js.map": "/board_games/static/js/2.32a0aa2d.chunk.js.map",
+    "static/js/3.fa576d7d.chunk.js": "/board_games/static/js/3.fa576d7d.chunk.js",
+    "static/js/3.fa576d7d.chunk.js.map": "/board_games/static/js/3.fa576d7d.chunk.js.map",
     "index.html": "/board_games/index.html",
-    "static/css/main.254f7452.chunk.css.map": "/board_games/static/css/main.254f7452.chunk.css.map",
-    "static/js/2.a94ca31f.chunk.js.LICENSE.txt": "/board_games/static/js/2.a94ca31f.chunk.js.LICENSE.txt"
+    "static/css/main.21379fea.chunk.css.map": "/board_games/static/css/main.21379fea.chunk.css.map",
+    "static/js/2.32a0aa2d.chunk.js.LICENSE.txt": "/board_games/static/js/2.32a0aa2d.chunk.js.LICENSE.txt",
+    "static/media/categories.bd28b37e.png": "/board_games/static/media/categories.bd28b37e.png",
+    "static/media/pears.b5891d1d.png": "/board_games/static/media/pears.b5891d1d.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.04e19362.js",
-    "static/js/2.a94ca31f.chunk.js",
-    "static/css/main.254f7452.chunk.css",
-    "static/js/main.370811bf.chunk.js"
+    "static/js/runtime-main.5a4925a3.js",
+    "static/js/2.32a0aa2d.chunk.js",
+    "static/css/main.21379fea.chunk.css",
+    "static/js/main.87e519b8.chunk.js"
   ]
 }
