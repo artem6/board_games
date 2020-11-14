@@ -2,22 +2,25 @@ import React, { useEffect, useState } from 'react';
 import styles from './common.module.css';
 
 import { getQueryParams, setQueryParams } from '../utils/queryParams';
+import { getGameCode } from '../utils/random';
+import { storageService } from '../utils/storageService';
 
 interface PropType {
   onSubmit: (game: string, player: string) => unknown;
-  cta?: string;
+  join?: boolean;
 }
 
-export const GameStart = ({ onSubmit, cta }: PropType) => {
+export const GameStart = ({ onSubmit, join }: PropType) => {
   const params = getQueryParams();
-  const [gameName, setGameName] = useState(params.game || '');
-  const [playerName, setPlayerName] = useState(params.player || '');
+  const [gameName, setGameName] = useState(params.game || (join ? '' : getGameCode()) || '');
+  const [playerName, setPlayerName] = useState(params.player || storageService.get('player') || '');
 
   useEffect(() => {
     if (params.start && params.game && params.player) {
+      storageService.set('player', params.player);
       onSubmit(params.game, params.player);
     }
-  }, [params]);
+  }, [params, onSubmit]);
 
   return (
     <div>
@@ -48,10 +51,11 @@ export const GameStart = ({ onSubmit, cta }: PropType) => {
             params.game = gameName;
             params.player = playerName;
             setQueryParams(params);
+            storageService.set('player', playerName);
             onSubmit(gameName, playerName);
           }}
         >
-          {cta || 'Start'}
+          {join ? 'Join' : 'Start'}
         </button>
       </div>
     </div>

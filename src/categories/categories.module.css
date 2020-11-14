@@ -31,3 +31,24 @@
 .playerAvatar:hover .score {
   height: 50px;
 }
+
+.votingTable {
+  margin: 16px auto;
+  text-align: left;
+  max-width: 500px;
+  width: 100%;
+}
+.votingTable .category {
+  text-align: center !important;
+  border-bottom: 1px solid black;
+  padding-top: 20px;
+}
+.votingTable td {
+  padding: 8px;
+  width: 45%;
+}
+
+.votingTable td:last-child {
+  text-align: right;
+  width: 10%;
+}

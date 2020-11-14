@@ -66,7 +66,7 @@ export const Pears = ({ history }: PropType) => {
   useEffect(() => {
     if (data.gameType && data.gameType !== 'pears')
       history.push(gameUrl(data.gameType, gameName, playerName));
-  }, [data]);
+  }, [data, gameName, history, playerName]);
 
   // kicking players
   useEffect(() => {
@@ -101,38 +101,41 @@ export const Pears = ({ history }: PropType) => {
     <div style={{ textAlign: 'center' }}>
       <Header title='Pears to Pears' infoText={`Round ${data.roundNumber || 0}/${MAX_ROUNDS}`} />
       {stage === 'name' ? (
-        <GameStart
-          onSubmit={(game, player) => {
-            const startGame = (data: PearsData | null) => {
-              if (!data) data = {} as PearsData;
-              data = deepCopy(data);
-              if (!data.gameType) data.gameType = 'pears';
-              if (data.gameType !== 'pears') window.location.href = '/board_games';
-              if (!data.id) data.id = game;
-              if (!data.version) data.version = 0;
-              if (!data.players) data.players = [];
-              if (!data.chosenCard) data.chosenCard = getGreenCard();
-              if (!data.stage) data.stage = 'waiting';
-              if (!data.playerChosenCard) data.playerChosenCard = {};
-              if (!data.playerVotedPlayer) data.playerVotedPlayer = {};
-              if (!data.playerResetsUsed) data.playerResetsUsed = {};
-              if (!data.playerCards) data.playerCards = {};
-              if (!data.playerScore) data.playerScore = {};
-              if (!data.roundNumber) data.roundNumber = 0;
+        <>
+          <h1>Host New Game</h1>
+          <GameStart
+            onSubmit={(game, player) => {
+              const startGame = (data: PearsData | null) => {
+                if (!data) data = {} as PearsData;
+                data = deepCopy(data);
+                if (!data.gameType) data.gameType = 'pears';
+                if (data.gameType !== 'pears') window.location.href = '/board_games';
+                if (!data.id) data.id = game;
+                if (!data.version) data.version = 0;
+                if (!data.players) data.players = [];
+                if (!data.chosenCard) data.chosenCard = getGreenCard();
+                if (!data.stage) data.stage = 'waiting';
+                if (!data.playerChosenCard) data.playerChosenCard = {};
+                if (!data.playerVotedPlayer) data.playerVotedPlayer = {};
+                if (!data.playerResetsUsed) data.playerResetsUsed = {};
+                if (!data.playerCards) data.playerCards = {};
+                if (!data.playerScore) data.playerScore = {};
+                if (!data.roundNumber) data.roundNumber = 0;
 
-              if (data.players.indexOf(player) === -1) {
-                data.players.push(player);
-                data.playerCards[player] = getNewHand();
-              }
+                if (data.players.indexOf(player) === -1) {
+                  data.players.push(player);
+                  data.playerCards[player] = getNewHand();
+                }
 
-              return data;
-            };
+                return data;
+              };
 
-            setGameName(game);
-            setPlayerName(player);
-            updateData(startGame(null), startGame);
-          }}
-        />
+              setGameName(game);
+              setPlayerName(player);
+              updateData(startGame(null), startGame);
+            }}
+          />
+        </>
       ) : null}
       {stage === 'waiting' ? (
         <div>

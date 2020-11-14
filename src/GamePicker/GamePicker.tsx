@@ -16,9 +16,9 @@ function GamePicker(props: PropType) {
     <div className={styles.mainContainer}>
       <Header title='Board Games' />
       <h1>Join a Game</h1>
-      <div className={styles.card} style={{ maxWidth: 400 }}>
+      <div className={styles.card} style={{ maxWidth: 400, margin: '16px auto' }}>
         <GameStart
-          cta='Join'
+          join
           onSubmit={async (game, player) => {
             const gameData = await getData<{ gameType: string }>(game);
             if (gameData.gameType) props.history.push(gameUrl(gameData.gameType, game, player));
@@ -29,14 +29,14 @@ function GamePicker(props: PropType) {
 
       <Link to='/pears'>
         <div className={styles.card}>
-          <img src={pears} />
+          <img src={pears} alt='Pears to Pears' />
           <div>Pears to Pears</div>
         </div>
       </Link>
 
       <Link to='/categories'>
         <div className={styles.card}>
-          <img src={categories} />
+          <img src={categories} alt='Categories' />
           <div>Categories</div>
         </div>
       </Link>

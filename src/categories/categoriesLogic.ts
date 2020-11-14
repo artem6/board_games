@@ -12,7 +12,7 @@ export const getSomeCategories = (catQty: number) => {
   return cats;
 };
 
-const letters = 'abcdefghijklmnopqrstuvwxyz';
+const letters = 'abcdefghijklmnoprstw';
 const categories = [
   `a boy's name`,
   `US cities`,

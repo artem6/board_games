@@ -114,7 +114,7 @@ export const Categories = ({ history }: PropType) => {
   useEffect(() => {
     if (data.gameType && data.gameType !== 'categories')
       history.push(gameUrl(data.gameType, gameName, playerName));
-  }, [data]);
+  }, [data, gameName, history, playerName]);
 
   // you were kicked
   useEffect(() => {
@@ -153,14 +153,17 @@ export const Categories = ({ history }: PropType) => {
     <div style={{ textAlign: 'center' }}>
       <Header title='Categories' infoText={`Round ${data.roundNumber || 0}/${MAX_ROUNDS}`} />
       {stage === 'name' ? (
-        <GameStart
-          onSubmit={(game, player) => {
-            setGameName(game);
-            setPlayerName(player);
-            const create = createGame(player, game);
-            updateData(create(null), create);
-          }}
-        />
+        <>
+          <h1>Host New Game</h1>
+          <GameStart
+            onSubmit={(game, player) => {
+              setGameName(game);
+              setPlayerName(player);
+              const create = createGame(player, game);
+              updateData(create(null), create);
+            }}
+          />
+        </>
       ) : null}
 
       {stage === 'waiting' ? (
@@ -184,7 +187,7 @@ export const Categories = ({ history }: PropType) => {
               <input
                 className={styles.enterWord}
                 type={'text'}
-                // placeholder={data.chosenLetter}
+                placeholder={data.chosenLetter + '...'}
                 value={myWords[idx] || ''}
                 onChange={(e) => {
                   const words = [...myWords];
@@ -204,34 +207,45 @@ export const Categories = ({ history }: PropType) => {
       {stage === 'voting' ? (
         <div>
           <h1>Letter: {data.chosenLetter}</h1>
-          {data.chosenCategories.map((c, idx) => (
-            <div key={idx}>
-              <div>
-                <b>{c}</b>
-              </div>
-              {Object.keys(data.playerWords).map((player) => {
-                const word = data.playerWords[player][idx];
-                if (!word) return null;
-                const checked = !data.rejectedWords[idx + word];
+          <table className={styles.votingTable}>
+            <tbody>
+              {data.chosenCategories.map((c, idx) => (
+                <>
+                  <tr key={idx}>
+                    <td className={styles.category} colSpan={3}>
+                      <b>{c}</b>
+                    </td>
+                  </tr>
+                  {Object.keys(data.playerWords).map((player) => {
+                    const word = data.playerWords[player][idx];
+                    const checked = !data.rejectedWords[idx + word];
 
-                return (
-                  <div key={player}>
-                    {word}
-                    <input
-                      type='checkbox'
-                      checked={checked}
-                      onChange={() => {
-                        const reject = rejectWord(idx, word);
-                        updateData(reject(data), reject);
-                      }}
-                    />
-                  </div>
-                );
-              })}
-              <br />
-              <br />
-            </div>
-          ))}
+                    return (
+                      <tr key={idx + player}>
+                        <td>{player}:</td>
+                        <td>{word}</td>
+                        <td>
+                          {!word ? null : (
+                            <input
+                              type='checkbox'
+                              checked={checked}
+                              onChange={() => {
+                                const reject = rejectWord(idx, word);
+                                updateData(reject(data), reject);
+                              }}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>
+                </>
+              ))}
+            </tbody>
+          </table>
 
           {isLeader ? (
             data.roundNumber < MAX_ROUNDS ? (
