@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-import { useServerData } from '../utils/useServerData';
-import { GameStart } from '../common/gameStart';
-import { updateData } from '../utils/updateData';
-import deepCopy from '../utils/deepCopy';
+import { useServerData } from '../../utils/useServerData';
+import { GameStart } from '../../common/gameStart';
+import { updateData } from '../../utils/updateData';
+import deepCopy from '../../utils/deepCopy';
 
 import styles from './categories.module.css';
 import { getLetter, getSomeCategories } from './categoriesLogic';
-import { Timer } from '../common/Timer';
-import { gameUrl } from '../utils/paths';
+import { Timer } from '../../common/Timer';
 import { RouteComponentProps } from 'react-router';
-import { WinnerScoreboard } from '../common/Winner';
-import { Header } from '../common/Header';
+import { WinnerScoreboard } from '../../common/Winner';
+import { Header } from '../../common/Header';
+import { CurrentPlayers } from '../../common/CurrentPlayers';
+import { GameLobby } from '../../common/GameLobby';
+import { useGameSession } from '../../utils/useGameSession';
+import { GameList } from '../../GamePicker/GameList';
 
 const ROUND_DURATION = 60 * 1000;
 const CATEGORIES_PER_ROUND = 5;
@@ -110,24 +113,12 @@ export const Categories = ({ history }: PropType) => {
   const isLeader = players[0] === playerName;
   const stage = !gameName || !playerName ? 'name' : data?.stage;
 
-  // game changed
-  useEffect(() => {
-    if (data.gameType && data.gameType !== 'categories')
-      history.push(gameUrl(data.gameType, gameName, playerName));
-  }, [data, gameName, history, playerName]);
-
-  // you were kicked
-  useEffect(() => {
-    if (gameName && playerName && data?.players?.length) {
-      if (data.players.indexOf(playerName) === -1 && data?.playerScore?.[playerName] !== undefined)
-        setGameName('');
-    }
-  }, [gameName, playerName, data]);
+  const { onKick } = useGameSession({ data, gameType: 'categories', playerName, history });
 
   // in case the leader refreshes
   useEffect(() => {
     if (data?.stage === 'playing' && Date.now() > data?.endTime && isLeader) {
-      updateData(startVoting(data), startVoting);
+      updateData(data, startVoting);
     }
   }, [isLeader, data]);
 
@@ -137,15 +128,15 @@ export const Categories = ({ history }: PropType) => {
     if (!myWords.length) return;
     if (!data.playerWords[playerName]?.length) {
       const share = shareMyWords(playerName, myWords);
-      updateData(share(data), share);
+      updateData(data, share);
     }
     setMyWords([]);
   }, [data, myWords, playerName, stage]);
 
   const startAndEndRound = () => {
-    updateData(startRound(data), startRound);
+    updateData(data, startRound);
     setTimeout(() => {
-      updateData(startVoting(data), startVoting);
+      updateData(data, startVoting);
     }, ROUND_DURATION);
   };
 
@@ -160,20 +151,13 @@ export const Categories = ({ history }: PropType) => {
               setGameName(game);
               setPlayerName(player);
               const create = createGame(player, game);
-              updateData(create(null), create);
+              updateData(null, create);
             }}
           />
         </>
       ) : null}
 
-      {stage === 'waiting' ? (
-        <div>
-          Waiting for more players.
-          <br />
-          <br />
-          <br />
-        </div>
-      ) : null}
+      {stage === 'waiting' ? <GameLobby gameCode={gameName} /> : null}
       {stage === 'waiting' && isLeader ? (
         <button onClick={startAndEndRound}>Start Game</button>
       ) : null}
@@ -231,7 +215,7 @@ export const Categories = ({ history }: PropType) => {
                               checked={checked}
                               onChange={() => {
                                 const reject = rejectWord(idx, word);
-                                updateData(reject(data), reject);
+                                updateData(data, reject);
                               }}
                             />
                           )}
@@ -253,7 +237,7 @@ export const Categories = ({ history }: PropType) => {
             ) : (
               <button
                 onClick={() => {
-                  updateData(startRound(data), startRound);
+                  updateData(data, startRound);
                 }}
               >
                 Show Results
@@ -263,33 +247,26 @@ export const Categories = ({ history }: PropType) => {
         </div>
       ) : null}
 
-      {stage === 'results' ? <WinnerScoreboard playerScore={data.playerScore} /> : null}
+      {stage === 'results' ? (
+        <>
+          <WinnerScoreboard playerScore={data.playerScore} />
+          {isLeader ? (
+            <>
+              <h1>Start a New Game</h1>
+              <GameList playerName={playerName} gameCode={gameName} />
+            </>
+          ) : null}
+        </>
+      ) : null}
 
-      <div className={styles.playerSection}>
-        {players.map((player) => (
-          <div key={player} className={styles.playerAvatar}>
-            <span>{player}</span>
-            <div className={styles.score}>
-              <div>{data?.playerScore?.[player] || '0'}</div>
-              {isLeader ? (
-                <div
-                  onClick={() => {
-                    const kick = (data: CategoriesData) => {
-                      data = deepCopy(data);
-                      data.players = data.players.filter((p) => p !== player);
-                      delete data.playerWords[player];
-                      return data;
-                    };
-                    updateData(kick(data), kick);
-                  }}
-                >
-                  kick
-                </div>
-              ) : null}
-            </div>
-          </div>
-        ))}
-      </div>
+      <CurrentPlayers
+        players={players.map((name) => ({
+          name,
+          score: data?.playerScore?.[name],
+        }))}
+        onKick={onKick}
+        isLeader={isLeader}
+      />
     </div>
   );
 };

@@ -1,17 +1,19 @@
-import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import styles from './GamePicker.module.css';
 
-import pears from './icons/pears.png';
-import categories from './icons/categories.png';
 import { GameStart } from '../common/gameStart';
-import { getData } from '../utils/updateData';
+import { getData, primeServer } from '../utils/updateData';
 import { gameUrl } from '../utils/paths';
 import { Header } from '../common/Header';
+import { GameList } from './GameList';
 
 interface PropType extends RouteComponentProps {}
 
-function GamePicker(props: PropType) {
+function GamePicker({ history }: PropType) {
+  useEffect(() => {
+    primeServer();
+  }, []);
   return (
     <div className={styles.mainContainer}>
       <Header title='Board Games' />
@@ -21,25 +23,12 @@ function GamePicker(props: PropType) {
           join
           onSubmit={async (game, player) => {
             const gameData = await getData<{ gameType: string }>(game);
-            if (gameData.gameType) props.history.push(gameUrl(gameData.gameType, game, player));
+            if (gameData.gameType) history.push(gameUrl(gameData.gameType, game, player));
           }}
         />
       </div>
       <h1>Host a Game</h1>
-
-      <Link to='/pears'>
-        <div className={styles.card}>
-          <img src={pears} alt='Pears to Pears' />
-          <div>Pears to Pears</div>
-        </div>
-      </Link>
-
-      <Link to='/categories'>
-        <div className={styles.card}>
-          <img src={categories} alt='Categories' />
-          <div>Categories</div>
-        </div>
-      </Link>
+      <GameList />
     </div>
   );
 }

@@ -11,8 +11,8 @@
 .greenCard {
   border: 10px solid #32cd32;
   display: flex;
-  width: 150px;
-  height: 200px;
+  width: 210px;
+  height: 260px;
   border-radius: 8px;
   padding: 16px;
   overflow: hidden;
@@ -46,8 +46,8 @@
 .redCard {
   border: 10px solid #ff6347;
   display: flex;
-  width: 150px;
-  height: 200px;
+  width: 210px;
+  height: 260px;
   border-radius: 8px;
   padding: 16px;
   overflow: hidden;
@@ -72,8 +72,8 @@
 .blueCard {
   border: 10px solid #6068f7;
   display: flex;
-  width: 150px;
-  height: 200px;
+  width: 210px;
+  height: 260px;
   border-radius: 8px;
   padding: 16px;
   overflow: hidden;
@@ -99,31 +99,4 @@
   text-align: right;
   width: 20%;
   min-width: 50px;
-}
-
-.playerSection {
-  margin-top: 200px;
-  vertical-align: top;
-}
-.playerSection .playerAvatar {
-  display: inline-block;
-  border: 1px solid black;
-  border-radius: 20px;
-  padding: 10px 20px;
-  margin: 8px;
-  cursor: default;
-}
-
-.playerAvatar .score {
-  display: block;
-  height: 0;
-  overflow: hidden;
-  transition: all 0.5s;
-}
-.playerAvatar.ready {
-  background: #6eb96c;
-}
-
-.playerAvatar:hover .score {
-  height: 50px;
 }

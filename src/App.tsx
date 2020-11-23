@@ -3,22 +3,9 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import GamePicker from './GamePicker/GamePicker';
-import { Pears } from './pearsToPears/pears';
-import { Categories } from './categories/categories';
-
-/*
-
-
-TODO
- - finish game after a set number of turns, and show winner
- - allow joining game via a code, without picking game first
-
-
-
-
-
-
-*/
+import { Pears } from './games/pearsToPears/pears';
+import { Categories } from './games/categories/categories';
+import { OnlyOne } from './games/onlyOne/onlyOne';
 
 function App() {
   return (
@@ -27,6 +14,7 @@ function App() {
         <Route exact path='/' render={(props) => <GamePicker {...props} />}></Route>
         <Route exact path='/pears' render={(props) => <Pears {...props} />}></Route>
         <Route exact path='/categories' render={(props) => <Categories {...props} />}></Route>
+        <Route exact path='/onlyone' render={(props) => <OnlyOne {...props} />}></Route>
       </Switch>
     </Router>
   );

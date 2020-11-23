@@ -29,7 +29,11 @@ export const GameStart = ({ onSubmit, join }: PropType) => {
           <tr>
             <td>Game Code:</td>
             <td>
-              <input type='text' value={gameName} onChange={(e) => setGameName(e.target.value)} />
+              <input
+                type='text'
+                value={gameName}
+                onChange={(e) => setGameName(e.target.value.toLowerCase())}
+              />
             </td>
           </tr>
           <tr>
@@ -55,7 +59,7 @@ export const GameStart = ({ onSubmit, join }: PropType) => {
             onSubmit(gameName, playerName);
           }}
         >
-          {join ? 'Join' : 'Start'}
+          {join ? 'Join' : 'Create Game'}
         </button>
       </div>
     </div>

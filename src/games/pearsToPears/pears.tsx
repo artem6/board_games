@@ -1,18 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useServerData } from '../utils/useServerData';
-import { GameStart } from '../common/gameStart';
-import { updateData } from '../utils/updateData';
-import deepCopy from '../utils/deepCopy';
+import { useServerData } from '../../utils/useServerData';
+import { GameStart } from '../../common/gameStart';
+import { updateData } from '../../utils/updateData';
+import deepCopy from '../../utils/deepCopy';
 import { getGreenCard, getNewHand, getRedCard } from './cards';
 import { PearsSelectCard } from './pearsSelectCard';
 import { PearsVoteCard } from './pearsVoteCard';
 import { PearsResultsView } from './pearsResultsView';
-import styles from './pears.module.css';
-import { gameUrl } from '../utils/paths';
+// import styles from './pears.module.css';
 import { RouteComponentProps } from 'react-router';
-import { Header } from '../common/Header';
-import { WinnerScoreboard } from '../common/Winner';
+import { Header } from '../../common/Header';
+import { WinnerScoreboard } from '../../common/Winner';
+import { CurrentPlayers } from '../../common/CurrentPlayers';
+import { GameLobby } from '../../common/GameLobby';
+import { useGameSession } from '../../utils/useGameSession';
+import { GameList } from '../../GamePicker/GameList';
 
 const MAX_ROUNDS = 10;
 const MAX_RESETS = 1;
@@ -62,19 +65,7 @@ export const Pears = ({ history }: PropType) => {
     .filter(Boolean) as { player: string; card: string; votes: number }[];
   const totalVotes = players.reduce((cnt, p) => cnt + (data?.playerVotedPlayer?.[p] ? 1 : 0), 0);
 
-  // game changed
-  useEffect(() => {
-    if (data.gameType && data.gameType !== 'pears')
-      history.push(gameUrl(data.gameType, gameName, playerName));
-  }, [data, gameName, history, playerName]);
-
-  // kicking players
-  useEffect(() => {
-    if (gameName && playerName && data?.players?.length) {
-      if (data.players.indexOf(playerName) === -1 && data?.playerScore?.[playerName] !== undefined)
-        setGameName('');
-    }
-  }, [gameName, playerName, data]);
+  const { onKick } = useGameSession({ data, gameType: 'onlyOne', playerName, history });
 
   // move from carding to voting when everyone selects a card
   useEffect(() => {
@@ -85,7 +76,7 @@ export const Pears = ({ history }: PropType) => {
         data.stage = 'voting';
         return data;
       };
-      updateData(setVotingStage(data), setVotingStage);
+      updateData(data, setVotingStage);
     }
     if (stage === 'voting' && totalVotes === players.length) {
       const setNewRound = (data: PearsData) => {
@@ -93,13 +84,13 @@ export const Pears = ({ history }: PropType) => {
         data.stage = 'results';
         return data;
       };
-      updateData(setNewRound(data), setNewRound);
+      updateData(data, setNewRound);
     }
   }, [data, stage, players, selectedCards, isLeader, totalVotes]);
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Header title='Pears to Pears' infoText={`Round ${data.roundNumber || 0}/${MAX_ROUNDS}`} />
+      <Header title='Pears to Pears' infoText={`Round ${data?.roundNumber || 0}/${MAX_ROUNDS}`} />
       {stage === 'name' ? (
         <>
           <h1>Host New Game</h1>
@@ -121,30 +112,24 @@ export const Pears = ({ history }: PropType) => {
                 if (!data.playerCards) data.playerCards = {};
                 if (!data.playerScore) data.playerScore = {};
                 if (!data.roundNumber) data.roundNumber = 0;
-
                 if (data.players.indexOf(player) === -1) {
                   data.players.push(player);
-                  data.playerCards[player] = getNewHand();
                 }
+                data.players.forEach((player) => {
+                  if (data && !data.playerCards[player]) data.playerCards[player] = getNewHand();
+                });
 
                 return data;
               };
 
               setGameName(game);
               setPlayerName(player);
-              updateData(startGame(null), startGame);
+              updateData(null, startGame);
             }}
           />
         </>
       ) : null}
-      {stage === 'waiting' ? (
-        <div>
-          Waiting for more players.
-          <br />
-          <br />
-          <br />
-        </div>
-      ) : null}
+      {stage === 'waiting' ? <GameLobby gameCode={gameName} /> : null}
       {stage === 'waiting' && isLeader ? (
         <button
           onClick={() => {
@@ -155,7 +140,7 @@ export const Pears = ({ history }: PropType) => {
               data.roundNumber++;
               return data;
             };
-            updateData(startGame(data), startGame);
+            updateData(data, startGame);
           }}
         >
           Start Game
@@ -176,7 +161,7 @@ export const Pears = ({ history }: PropType) => {
               data.playerResetsUsed[playerName]++;
               return data;
             };
-            updateData(resetHand(data), resetHand);
+            updateData(data, resetHand);
           }}
           onSelect={(card: string) => {
             const selectCard = (data: PearsData) => {
@@ -184,7 +169,7 @@ export const Pears = ({ history }: PropType) => {
               data.playerChosenCard[playerName] = card;
               return data;
             };
-            updateData(selectCard(data), selectCard);
+            updateData(data, selectCard);
           }}
         />
       ) : null}
@@ -201,7 +186,7 @@ export const Pears = ({ history }: PropType) => {
               data.playerVotedPlayer[playerName] = player;
               return data;
             };
-            updateData(votePlayer(data), votePlayer);
+            updateData(data, votePlayer);
           }}
         />
       ) : null}
@@ -237,51 +222,37 @@ export const Pears = ({ history }: PropType) => {
 
                     return data;
                   };
-                  updateData(nextRound(data), nextRound);
+                  updateData(data, nextRound);
                 }
               : undefined
           }
         />
       ) : null}
 
-      {stage === 'winnerScoreboard' ? <WinnerScoreboard playerScore={data.playerScore} /> : null}
+      {stage === 'winnerScoreboard' ? (
+        <>
+          <WinnerScoreboard playerScore={data.playerScore} />
+          {isLeader ? (
+            <>
+              <h1>Start a New Game</h1>
+              <GameList playerName={playerName} gameCode={gameName} />
+            </>
+          ) : null}
+        </>
+      ) : null}
 
-      <div className={styles.playerSection}>
-        {players.map((player) => (
-          <div
-            key={player}
-            className={
-              styles.playerAvatar +
-              ' ' +
-              ((stage === 'carding' && data?.playerChosenCard?.[player]) ||
-              (stage === 'voting' && data?.playerVotedPlayer?.[player])
-                ? styles.ready
-                : '')
-            }
-          >
-            <span>{player}</span>
-            <div className={styles.score}>
-              <div>{data?.playerScore?.[player] || '0'}</div>
-              {isLeader ? (
-                <div
-                  onClick={() => {
-                    const kick = (data: PearsData) => {
-                      data = deepCopy(data);
-                      data.players = data.players.filter((p) => p !== player);
-                      delete data.playerVotedPlayer[player];
-                      delete data.playerChosenCard[player];
-                      return data;
-                    };
-                    updateData(kick(data), kick);
-                  }}
-                >
-                  kick
-                </div>
-              ) : null}
-            </div>
-          </div>
-        ))}
-      </div>
+      <CurrentPlayers
+        players={players.map((name) => ({
+          name,
+          score: data?.playerScore?.[name],
+          ready: !!(
+            (stage === 'carding' && data?.playerChosenCard?.[name]) ||
+            (stage === 'voting' && data?.playerVotedPlayer?.[name])
+          ),
+        }))}
+        onKick={onKick}
+        isLeader={isLeader}
+      />
     </div>
   );
 };

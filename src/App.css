@@ -49,3 +49,7 @@ button {
 button:hover {
   box-shadow: 3px 3px 13px -8px rgba(0, 0, 0, 0.75);
 }
+button:disabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
