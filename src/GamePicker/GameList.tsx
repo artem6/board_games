@@ -5,7 +5,7 @@ import styles from './GamePicker.module.css';
 import pears from './icons/pears.png';
 import categories from './icons/categories.png';
 import onlyone from './icons/onlyone.png';
-import { gameUrl } from '../utils/paths';
+import { BASE_PATH, gameUrl } from '../utils/paths';
 import { getData, updateData } from '../utils/updateData';
 import { FlipCard } from './FlipCard';
 
@@ -33,7 +33,7 @@ export const GameList = ({ gameCode, playerName }: Props) => {
       gameType,
     }));
 
-    window.location.href = gameUrl(gameType, gameCode, playerName);
+    window.location.href = BASE_PATH + gameUrl(gameType, gameCode, playerName);
   };
   return (
     <>

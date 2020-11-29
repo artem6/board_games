@@ -190,7 +190,11 @@ export const OnlyOne = ({ history }: PropType) => {
               {Object.keys(data.playerHints).map((player) => {
                 const word = data.playerHints[player];
                 if (data.duplicateWords[word]) return null;
-                return <div key={player}>{word}</div>;
+                return (
+                  <div key={player}>
+                    {word} ({player})
+                  </div>
+                );
               })}
             </div>
             <h3
@@ -230,7 +234,11 @@ export const OnlyOne = ({ history }: PropType) => {
               {Object.keys(data.playerHints).map((player) => {
                 const word = data.playerHints[player];
                 if (data.duplicateWords[word]) return null;
-                return <div key={player}>{word}</div>;
+                return (
+                  <div key={player}>
+                    {word} ({player})
+                  </div>
+                );
               })}
             </div>
           </div>
