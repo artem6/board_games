@@ -1,25 +1,27 @@
 {
   "files": {
-    "main.css": "/board_games/static/css/main.c324a8c3.chunk.css",
-    "main.js": "/board_games/static/js/main.6b5571a3.chunk.js",
-    "main.js.map": "/board_games/static/js/main.6b5571a3.chunk.js.map",
-    "runtime-main.js": "/board_games/static/js/runtime-main.b8238c98.js",
-    "runtime-main.js.map": "/board_games/static/js/runtime-main.b8238c98.js.map",
-    "static/js/2.43c3d082.chunk.js": "/board_games/static/js/2.43c3d082.chunk.js",
-    "static/js/2.43c3d082.chunk.js.map": "/board_games/static/js/2.43c3d082.chunk.js.map",
-    "static/js/3.8e6d8b07.chunk.js": "/board_games/static/js/3.8e6d8b07.chunk.js",
-    "static/js/3.8e6d8b07.chunk.js.map": "/board_games/static/js/3.8e6d8b07.chunk.js.map",
+    "main.css": "/board_games/static/css/main.d1b36d88.chunk.css",
+    "main.js": "/board_games/static/js/main.afd00335.chunk.js",
+    "main.js.map": "/board_games/static/js/main.afd00335.chunk.js.map",
+    "runtime-main.js": "/board_games/static/js/runtime-main.17cc49d9.js",
+    "runtime-main.js.map": "/board_games/static/js/runtime-main.17cc49d9.js.map",
+    "static/js/2.fce4c609.chunk.js": "/board_games/static/js/2.fce4c609.chunk.js",
+    "static/js/2.fce4c609.chunk.js.map": "/board_games/static/js/2.fce4c609.chunk.js.map",
+    "static/js/3.54123b71.chunk.js": "/board_games/static/js/3.54123b71.chunk.js",
+    "static/js/3.54123b71.chunk.js.map": "/board_games/static/js/3.54123b71.chunk.js.map",
     "index.html": "/board_games/index.html",
-    "static/css/main.c324a8c3.chunk.css.map": "/board_games/static/css/main.c324a8c3.chunk.css.map",
-    "static/js/2.43c3d082.chunk.js.LICENSE.txt": "/board_games/static/js/2.43c3d082.chunk.js.LICENSE.txt",
+    "static/css/main.d1b36d88.chunk.css.map": "/board_games/static/css/main.d1b36d88.chunk.css.map",
+    "static/js/2.fce4c609.chunk.js.LICENSE.txt": "/board_games/static/js/2.fce4c609.chunk.js.LICENSE.txt",
+    "static/media/artistsf.50ec0951.png": "/board_games/static/media/artistsf.50ec0951.png",
     "static/media/categories.bd28b37e.png": "/board_games/static/media/categories.bd28b37e.png",
     "static/media/onlyone.1aed0167.png": "/board_games/static/media/onlyone.1aed0167.png",
-    "static/media/pears.b5891d1d.png": "/board_games/static/media/pears.b5891d1d.png"
+    "static/media/pears.b5891d1d.png": "/board_games/static/media/pears.b5891d1d.png",
+    "static/media/straightlines.5973dd74.png": "/board_games/static/media/straightlines.5973dd74.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.b8238c98.js",
-    "static/js/2.43c3d082.chunk.js",
-    "static/css/main.c324a8c3.chunk.css",
-    "static/js/main.6b5571a3.chunk.js"
+    "static/js/runtime-main.17cc49d9.js",
+    "static/js/2.fce4c609.chunk.js",
+    "static/css/main.d1b36d88.chunk.css",
+    "static/js/main.afd00335.chunk.js"
   ]
 }
