@@ -118,6 +118,12 @@ export const OnlyOne = ({ history }: PropType) => {
                 onChange={(e) => {
                   setMyWord(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && myWord) {
+                    updateData(data, shareMyWord(playerName, myWord));
+                    setMyWord('');
+                  }
+                }}
               ></input>
             </div>
             <div>
@@ -210,6 +216,12 @@ export const OnlyOne = ({ history }: PropType) => {
                 type={'text'}
                 value={myWord}
                 onChange={(e) => setMyWord(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && myWord) {
+                    updateData(data, guessWord(myWord));
+                    setMyWord('');
+                  }
+                }}
               ></input>
             </div>
             <div>

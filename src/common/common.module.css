@@ -89,3 +89,21 @@
 .playerAvatar:hover .score {
   height: 50px;
 }
+
+.loadingContainer {
+  margin: 20px auto;
+  max-width: 400px;
+  width: 100%;
+  height: 10px;
+  border-radius: 4px;
+  background: #ccc;
+}
+.loadingBar {
+  width: 0%;
+  height: 10px;
+  border: 1px solid #ccc;
+  background: #4a4aab;
+  transition: width 40s;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

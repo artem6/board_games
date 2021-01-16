@@ -1,0 +1,70 @@
+.enterWord {
+  width: 200px;
+  font-size: 20px;
+  padding: 10px;
+  margin: 4px;
+  margin: 30px;
+}
+
+.votingTable {
+  margin: 60px auto;
+  text-align: left;
+  max-width: 500px;
+  width: 100%;
+}
+.votingTable .category {
+  text-align: center !important;
+  border-bottom: 1px solid black;
+  padding-top: 20px;
+}
+.votingTable td {
+  padding: 8px;
+  width: 45%;
+}
+
+.votingTable td:last-child {
+  text-align: right;
+  width: 10%;
+}
+
+.genericContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 60px auto;
+}
+
+.confirmGuessContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.confirmGuessContainer table {
+  margin: 60px auto;
+  text-align: left;
+}
+.confirmGuessContainer td {
+  padding: 10px;
+  width: 50%;
+}
+.confirmGuessContainer button {
+  margin: 20px;
+}
+
+.correct {
+  background: #179400;
+  color: #fff;
+}
+.wrong {
+  background: #bd0000;
+  color: #fff;
+}
+
+.approveWord {
+  opacity: 0.2;
+  cursor: pointer;
+}
+.approveWord:hover {
+  opacity: 1;
+}

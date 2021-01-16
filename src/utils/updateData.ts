@@ -28,6 +28,4 @@ export const getData = async <T>(id: string): Promise<T> => {
   return json;
 };
 
-export const primeServer = () => {
-  fetch(`${config('API_HOST')}`);
-};
+export const primeServer = () => fetch(`${config('API_HOST')}`);

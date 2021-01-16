@@ -5,6 +5,8 @@ import styles from './GamePicker.module.css';
 import pears from './icons/pears.png';
 import categories from './icons/categories.png';
 import onlyone from './icons/onlyone.png';
+import artistsf from './icons/artistsf.png';
+import straightlines from './icons/straightlines.png';
 import { BASE_PATH, gameUrl } from '../utils/paths';
 import { getData, updateData } from '../utils/updateData';
 import { FlipCard } from './FlipCard';
@@ -108,6 +110,57 @@ export const GameList = ({ gameCode, playerName }: Props) => {
                   hint givers. Each hint giver must provide a one-word hint so that the guesser can
                   figure out the word. If any two players give the same hint, that hint is
                   disqualified.
+                </div>
+              </div>
+            }
+          />
+        </div>
+      </Link>
+
+      <Link to='/artistsf' onClick={keepPlayers('artistsf')}>
+        <div className={styles.cardContainer}>
+          <FlipCard
+            front={
+              <div className={styles.card}>
+                <img src={artistsf} alt='Artist Goes to SF' />
+                <div>Artist Goes to SF</div>
+              </div>
+            }
+            back={
+              <div className={styles.card}>
+                <div>
+                  <b>Artist Goes to SF</b>
+                </div>
+                <br />
+                <div>
+                  Each round all but one player knows the word being drawn. Players alternate adding
+                  one continuous line at a time to a shared drawing. After two lines added per
+                  player, everyone votes on who is the imposter that doesn't know the word.
+                </div>
+              </div>
+            }
+          />
+        </div>
+      </Link>
+
+      <Link to='/straightlines' onClick={keepPlayers('straightlines')}>
+        <div className={styles.cardContainer}>
+          <FlipCard
+            front={
+              <div className={styles.card}>
+                <img src={straightlines} alt='Straight Lines' />
+                <div>Straight Lines</div>
+              </div>
+            }
+            back={
+              <div className={styles.card}>
+                <div>
+                  <b>Straight Lines</b>
+                </div>
+                <br />
+                <div>
+                  One player draws the word, but can only use straight lines. Other players guess
+                  what the drawing is. Gain points for using fewer lines.
                 </div>
               </div>
             }

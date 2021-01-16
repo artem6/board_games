@@ -6,6 +6,8 @@ import GamePicker from './GamePicker/GamePicker';
 import { Pears } from './games/pearsToPears/pears';
 import { Categories } from './games/categories/categories';
 import { OnlyOne } from './games/onlyOne/onlyOne';
+import { ArtistSF } from './games/artistSF/artistSF';
+import { StraightLines } from './games/straightLines/straightLines';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route exact path='/pears' render={(props) => <Pears {...props} />}></Route>
         <Route exact path='/categories' render={(props) => <Categories {...props} />}></Route>
         <Route exact path='/onlyone' render={(props) => <OnlyOne {...props} />}></Route>
+        <Route exact path='/artistsf' render={(props) => <ArtistSF {...props} />}></Route>
+        <Route exact path='/straightlines' render={(props) => <StraightLines {...props} />}></Route>
       </Switch>
     </Router>
   );
