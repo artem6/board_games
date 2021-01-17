@@ -75,10 +75,24 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    function mouseEvent(res: string, e: MouseEvent) {
+    function mouseEvent(res: string, e: MouseEvent | TouchEvent) {
       let { prevX, prevY } = lastPos.current;
-      const curX = e.clientX - canvas.offsetLeft;
-      const curY = e.clientY - canvas.offsetTop;
+      let curX = 0;
+      let curY = 0;
+      if ((e as any).touches) {
+        const touch = (e as TouchEvent).touches[0];
+        if (touch) {
+          curX = touch.clientX - canvas.offsetLeft + window.scrollX;
+          curY = touch.clientY - canvas.offsetTop + window.scrollY;
+        } else {
+          curX = lastPos.current.prevX;
+          curY = lastPos.current.prevY;
+        }
+      } else {
+        const mouse = e as MouseEvent;
+        curX = mouse.clientX - canvas.offsetLeft;
+        curY = mouse.clientY - canvas.offsetTop;
+      }
       lastPos.current.prevX = curX;
       lastPos.current.prevY = curY;
 
@@ -94,7 +108,7 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
         ctx.beginPath();
         ctx.moveTo(prevX, prevY);
         ctx.lineTo(curX, curY);
-        ctx.strokeStyle = color || 'black';
+        ctx.strokeStyle = color || 'yellow';
         ctx.lineWidth = width || 2;
         ctx.stroke();
         ctx.closePath();
@@ -129,9 +143,13 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
         line();
       }
     }
-    const move = (e: MouseEvent) => mouseEvent('move', e);
-    const down = (e: MouseEvent) => mouseEvent('down', e);
-    const up = (e: MouseEvent) => mouseEvent('up', e);
+    const move = (e: MouseEvent | TouchEvent) => mouseEvent('move', e);
+    const down = (e: MouseEvent | TouchEvent) => mouseEvent('down', e);
+    const up = (e: MouseEvent | TouchEvent) => mouseEvent('up', e);
+
+    canvas.addEventListener('touchstart', down, false);
+    canvas.addEventListener('touchend', up, false);
+    canvas.addEventListener('touchmove', move, false);
 
     canvas.addEventListener('mousemove', move, false);
     canvas.addEventListener('mousedown', down, false);
@@ -139,6 +157,10 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
     canvas.addEventListener('mouseout', up, false);
 
     return () => {
+      canvas.removeEventListener('touchstart', down);
+      canvas.removeEventListener('touchend', up);
+      canvas.removeEventListener('touchmove', move);
+
       canvas.removeEventListener('mousemove', move);
       canvas.removeEventListener('mousedown', down);
       canvas.removeEventListener('mouseup', up);
@@ -147,7 +169,12 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
   }, [color, width, onChange, canvasRef, lastPos, linesOnly, disableTap]);
 
   return (
-    <canvas ref={canvasRef} width='400' height='400' style={{ border: '1px solid black' }}></canvas>
+    <canvas
+      ref={canvasRef}
+      width='400'
+      height='400'
+      style={{ border: '1px solid black', touchAction: 'none' }}
+    ></canvas>
   );
 };
 
