@@ -129,7 +129,7 @@ export const GameList = ({ gameCode, playerName }: Props) => {
             back={
               <div className={styles.card}>
                 <div>
-                  <b>Artist Goes to SF</b>
+                  <b>Fake Artist Goes to SF</b>
                 </div>
                 <br />
                 <div>

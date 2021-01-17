@@ -50,20 +50,21 @@ export const startRound = (data: ArtistSFData) => {
 
   // first round setup
   if (data.roundNumber === 0) {
-    data.randomizedPlayers = randomizeList(data.players);
     data.words = randomizeList(data.words);
   }
 
   // add points
-  let imposterPoints = 0;
-  data.players.forEach((player) => {
-    data.playerScore[player] = data.playerScore[player] || 0;
-    if (player === data.imposter) return;
-    if (data.imposterGuess[player] === data.imposter) {
-      data.playerScore[player] += 1;
-    } else imposterPoints += 1;
-  });
-  data.playerScore[data.imposter] += imposterPoints;
+  if (data.roundNumber !== 0) {
+    let imposterPoints = 0;
+    data.players.forEach((player) => {
+      data.playerScore[player] = data.playerScore[player] || 0;
+      if (player === data.imposter) return;
+      if (data.imposterGuess[player] === data.imposter) {
+        data.playerScore[player] += 1;
+      } else imposterPoints += 1;
+    });
+    data.playerScore[data.imposter] += imposterPoints;
+  }
 
   // game over
   if (data.roundNumber === data.words.length) {
@@ -72,6 +73,7 @@ export const startRound = (data: ArtistSFData) => {
   }
 
   // start next round
+  data.randomizedPlayers = randomizeList(data.players);
   data.stage = 'addingLines';
   data.roundNumber++;
   data.image = blankImage;

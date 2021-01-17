@@ -78,7 +78,7 @@ export const ArtistSF = ({ history }: PropType) => {
   return (
     <div style={{ textAlign: 'center' }}>
       <Header
-        title='Artist Goes To SF'
+        title='Fake Artist Goes To SF'
         infoText={`Round ${data?.roundNumber || 0}/${data?.players?.length || 0}`}
       />
       {stage === 'name' ? (
@@ -210,6 +210,9 @@ export const ArtistSF = ({ history }: PropType) => {
         <div className={styles.confirmGuessContainer}>
           <div>
             The imposter is <b>{data.imposter}</b>
+          </div>
+          <div>
+            The word was <b>{data.words[data.roundNumber - 1].word}</b>
           </div>
           <table>
             <tbody>
