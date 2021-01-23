@@ -10,6 +10,12 @@ const configSettings = {
   dev: {
     API_HOST: 'http://localhost:5000/',
     WS_HOST: 'ws://localhost:5000/ws',
+
+    // API_HOST: 'http://192.168.50.63:5000/',
+    // WS_HOST: 'ws://192.168.50.63:5000/ws',
+
+    // API_HOST: 'https://artemboardgames.herokuapp.com/',
+    // WS_HOST: 'wss://artemboardgames.herokuapp.com/ws',
   },
 };
 

@@ -6,16 +6,16 @@ export const updateData = async <T>(
   retries = 5,
   wait = 50,
 ): Promise<T> => {
-  const body = JSON.stringify(updateFn(data));
-  if (!body) return data;
+  const newData = updateFn(data);
+  if (!newData) return data;
   const res = await fetch(`${config('API_HOST')}update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body,
+    body: JSON.stringify(newData),
   });
-  const json = await res.json();
+  const json = JSON.parse(await res.text());
   if (json.status === 'success') return json.data;
   else {
     if (retries <= 0) throw new Error('Could not update');

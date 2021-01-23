@@ -23,13 +23,19 @@ const clearCanvas = (canvas: HTMLCanvasElement) => {
   canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-const writeCanvas = (canvas: HTMLCanvasElement, data: string) => {
+const writeCanvas = (canvas: HTMLCanvasElement, data: string, retry = 5) => {
   return new Promise<void>((r) => {
+    const originalImageLength = readCanvas(canvas).length;
     const img = new window.Image();
     img.addEventListener('load', () => {
       canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
       canvas.getContext('2d')?.drawImage(img, 0, 0);
-      r();
+      const newImageLength = readCanvas(canvas).length;
+      if (newImageLength === originalImageLength && newImageLength !== data.length && retry > 0) {
+        writeCanvas(canvas, data, retry - 1).then(r);
+      } else {
+        r();
+      }
     });
     img.setAttribute('src', data);
   });
@@ -260,9 +266,9 @@ export const DrawingScreen = ({
               style={{
                 padding: 15,
                 background: c,
-                margin: 4,
+                margin: color === c ? 1 : 4,
                 display: 'inline-block',
-                border: `${color === c ? 2 : 1}px solid black`,
+                border: `${color === c ? 4 : 1}px solid black`,
               }}
               onClick={() => setColor(c)}
             />
@@ -276,9 +282,9 @@ export const DrawingScreen = ({
               key={w}
               style={{
                 padding: (40 - w) / 2,
-                margin: 4,
+                margin: width === w ? 4 : 7,
                 display: 'inline-block',
-                border: `${width === w ? 2 : 1}px solid black`,
+                border: `${width === w ? 4 : 1}px solid black`,
               }}
               onClick={() => setWidth(w)}
             >

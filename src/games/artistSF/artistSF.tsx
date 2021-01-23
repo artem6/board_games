@@ -211,20 +211,23 @@ export const ArtistSF = ({ history }: PropType) => {
           <div>Category: {data.words[data.roundNumber - 1].category}</div>
           <br />
           <DrawingScreen data={data.image} />
-          {data.randomizedPlayers.map((imposter) => (
-            <button
-              key={imposter}
-              style={{
-                background: data.imposterGuess[playerName] === imposter ? '#6eb96c' : undefined,
-                margin: 20,
-              }}
-              onClick={() => {
-                updateData(data, guessImposter(playerName, imposter));
-              }}
-            >
-              {imposter}
-            </button>
-          ))}
+          {data.randomizedPlayers.map((imposter) => {
+            if (imposter === playerName) return null;
+            return (
+              <button
+                key={imposter}
+                style={{
+                  background: data.imposterGuess[playerName] === imposter ? '#6eb96c' : undefined,
+                  margin: 20,
+                }}
+                onClick={() => {
+                  updateData(data, guessImposter(playerName, imposter));
+                }}
+              >
+                {imposter}
+              </button>
+            );
+          })}
         </div>
       ) : null}
 
