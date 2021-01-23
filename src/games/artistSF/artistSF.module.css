@@ -60,3 +60,9 @@
   background: #bd0000;
   color: #fff;
 }
+
+.historyImage {
+  display: inline-block;
+  width: 100px;
+  margin: 20px;
+}

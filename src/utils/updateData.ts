@@ -2,23 +2,25 @@ import { config } from '../config';
 
 export const updateData = async <T>(
   data: T,
-  updateFn: { (d: T): T },
+  updateFn: { (d: T): T | null },
   retries = 5,
   wait = 50,
 ): Promise<T> => {
+  const body = JSON.stringify(updateFn(data));
+  if (!body) return data;
   const res = await fetch(`${config('API_HOST')}update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(updateFn(data)),
+    body,
   });
   const json = await res.json();
   if (json.status === 'success') return json.data;
   else {
     if (retries <= 0) throw new Error('Could not update');
     await new Promise((r) => setTimeout(r, Math.floor(Math.random() * wait)));
-    return updateData(updateFn(json.data), updateFn, retries - 1, wait * 2);
+    return updateData(json.data, updateFn, retries - 1, wait * 2);
   }
 };
 

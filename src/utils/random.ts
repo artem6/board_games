@@ -9,7 +9,12 @@ export const selectOneRandomly = <T>(list: T[]) => list[randomInt(list.length)];
 
 export const randomizeList = <T>(list: T[]) => {
   list = [...list];
-  list.sort(() => (Math.random() > 0.5 ? 1 : -1));
+  for (let i = 0; i < list.length; i++) {
+    const j = randomInt(list.length - i) + i;
+    const temp = list[i];
+    list[i] = list[j];
+    list[j] = temp;
+  }
   return list;
 };
 

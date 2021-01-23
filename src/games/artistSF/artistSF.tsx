@@ -32,6 +32,7 @@ export const ArtistSF = ({ history }: PropType) => {
   const [playerName, setPlayerName] = useState('');
   const [myWord, setMyWord] = useState<string>('');
   const [myCategory, setMyCategory] = useState<string>('');
+  const [imageHistory, setImageHistory] = useState<{ player: string; image: string }[]>([]);
 
   const data: ArtistSFData = useServerData(gameName);
 
@@ -39,6 +40,7 @@ export const ArtistSF = ({ history }: PropType) => {
   const isLeader = players[0] === playerName;
   const stage = !gameName || !playerName ? 'name' : data?.stage;
   const currentPlayer = data?.randomizedPlayers?.[data.currentPlayer % data.players?.length];
+  const lastPlayer = data?.randomizedPlayers?.[(data.currentPlayer - 1) % data.players?.length];
   const currentWord = data?.words?.[data?.roundNumber - 1]?.word;
 
   const { onKick } = useGameSession({ data, gameType: 'artistsf', playerName, history });
@@ -75,6 +77,16 @@ export const ArtistSF = ({ history }: PropType) => {
     updateData(data, revealImposter);
   }, [isLeader, data]);
 
+  // keep track of prior drawings
+  useEffect(() => {
+    if ((!lastPlayer || data?.stage === 'results') && imageHistory.length)
+      return setImageHistory([]);
+    if (data?.stage !== 'addingLines' && data?.stage !== 'guessingImposter') return;
+    if (lastPlayer && data.image !== imageHistory[0]?.image) {
+      setImageHistory([{ player: lastPlayer, image: data.image }, ...imageHistory]);
+    }
+  }, [lastPlayer, imageHistory, data.image, data.stage]);
+
   return (
     <div style={{ textAlign: 'center' }}>
       <Header
@@ -104,11 +116,12 @@ export const ArtistSF = ({ history }: PropType) => {
         <div className={styles.genericContainer}>
           <h1>Enter a Word and Category</h1>
           <div>
-            Each round one players word will be shared with all but one player. All players will see
-            the category.
+            Each round one player's word will be shared with all but one player. All players will
+            see the category.
           </div>
-          <div>Word:</div>
+          <br />
           <div>
+            <span style={{ display: 'inline-block', width: 100 }}>Word:</span>
             <input
               className={styles.enterWord}
               type={'text'}
@@ -118,8 +131,8 @@ export const ArtistSF = ({ history }: PropType) => {
               }}
             ></input>
           </div>
-          <div>Category:</div>
           <div>
+            <span style={{ display: 'inline-block', width: 100 }}>Category:</span>
             <input
               className={styles.enterWord}
               type={'text'}
@@ -188,6 +201,15 @@ export const ArtistSF = ({ history }: PropType) => {
               ? 'You are the imposter. Pick any name.'
               : 'Who do you think is the imposter?'}
           </h1>
+          {playerName === data.imposter ? (
+            <div>You are the imposter.</div>
+          ) : (
+            <div>
+              Word: <b>{currentWord}</b>
+            </div>
+          )}
+          <div>Category: {data.words[data.roundNumber - 1].category}</div>
+          <br />
           <DrawingScreen data={data.image} />
           {data.randomizedPlayers.map((imposter) => (
             <button
@@ -212,7 +234,7 @@ export const ArtistSF = ({ history }: PropType) => {
             The imposter is <b>{data.imposter}</b>
           </div>
           <div>
-            The word was <b>{data.words[data.roundNumber - 1].word}</b>
+            The word is <b>{data.words[data.roundNumber - 1].word}</b>
           </div>
           <table>
             <tbody>
@@ -246,6 +268,15 @@ export const ArtistSF = ({ history }: PropType) => {
           </div>
         </div>
       ) : null}
+
+      <div>
+        {imageHistory.map((history, idx) => (
+          <span className={styles.historyImage} key={idx}>
+            <DrawingScreen data={history.image} canvasWidth={100} canvasHeight={100} />
+            {history.player}
+          </span>
+        ))}
+      </div>
 
       {stage === 'results' ? (
         <>

@@ -40,6 +40,7 @@ export const startGame = (data: ArtistSFData) => {
 export const shareMyWord = (player: string, word: string, category: string) => (
   data: ArtistSFData,
 ) => {
+  if (data.words.find((w) => w.player === player)) return null;
   data = deepCopy(data);
   data.words.push({ player, word, category });
   return data;

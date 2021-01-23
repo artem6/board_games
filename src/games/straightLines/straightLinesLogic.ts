@@ -85,7 +85,8 @@ export const shareMyDrawing = (image: string) => (data: StraightLinesData) => {
 };
 
 export const guessWord = (player: string, word: string) => (data: StraightLinesData) => {
-  if (data.stage !== 'drawing') return data;
+  if (data.stage !== 'drawing') return null;
+  if (data.playerGuesses.find((g) => g.player === player && g.word === word)) return null;
   data = deepCopy(data);
   data.playerGuesses = [{ player, word }, ...data.playerGuesses];
   if (wordMatch(word, data.word)) {

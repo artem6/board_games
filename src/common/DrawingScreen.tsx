@@ -14,6 +14,9 @@ interface PropType {
   brushPicker?: boolean;
   clearable?: boolean;
   disableTap?: boolean;
+
+  canvasWidth?: number;
+  canvasHeight?: number;
 }
 
 const clearCanvas = (canvas: HTMLCanvasElement) => {
@@ -35,7 +38,17 @@ const readCanvas = (canvas: HTMLCanvasElement) => {
   return canvas.toDataURL();
 };
 
-const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap }: PropType) => {
+const DrawingCanvas = ({
+  id,
+  color,
+  width,
+  data,
+  onChange,
+  linesOnly,
+  disableTap,
+  canvasWidth,
+  canvasHeight,
+}: PropType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const lastPos = useRef({
     prevX: 0,
@@ -90,8 +103,8 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
         }
       } else {
         const mouse = e as MouseEvent;
-        curX = mouse.clientX - canvas.offsetLeft;
-        curY = mouse.clientY - canvas.offsetTop;
+        curX = mouse.clientX - canvas.offsetLeft + window.scrollX;
+        curY = mouse.clientY - canvas.offsetTop + window.scrollY;
       }
       lastPos.current.prevX = curX;
       lastPos.current.prevY = curY;
@@ -171,8 +184,8 @@ const DrawingCanvas = ({ id, color, width, data, onChange, linesOnly, disableTap
   return (
     <canvas
       ref={canvasRef}
-      width='400'
-      height='400'
+      width={canvasWidth || 400}
+      height={canvasHeight || 400}
       style={{ border: '1px solid black', touchAction: 'none' }}
     ></canvas>
   );
@@ -187,6 +200,8 @@ export const DrawingScreen = ({
   brushPicker,
   clearable,
   disableTap,
+  canvasWidth,
+  canvasHeight,
 }: PropType) => {
   const [color, setColor] = useState('black');
   const [width, setWidth] = useState(4);
@@ -202,11 +217,13 @@ export const DrawingScreen = ({
           data={data}
           linesOnly={linesOnly}
           disableTap={disableTap}
+          canvasWidth={canvasWidth}
+          canvasHeight={canvasHeight}
         />
       ) : (
         <img
-          width={400}
-          height={400}
+          width={canvasWidth || 400}
+          height={canvasHeight || 400}
           alt='Drawing Canvas'
           style={{ border: '1px solid black' }}
           src={data}

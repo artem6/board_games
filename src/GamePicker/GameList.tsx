@@ -122,8 +122,8 @@ export const GameList = ({ gameCode, playerName }: Props) => {
           <FlipCard
             front={
               <div className={styles.card}>
-                <img src={artistsf} alt='Artist Goes to SF' />
-                <div>Artist Goes to SF</div>
+                <img src={artistsf} alt='Fake Artist Goes to SF' />
+                <div>Fake Artist Goes to SF</div>
               </div>
             }
             back={

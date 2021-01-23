@@ -85,8 +85,9 @@ export const StraightLines = ({ history }: PropType) => {
         <div className={styles.genericContainer}>
           <h1>Select a Word to Draw</h1>
           <div>
-            {getThreeWords().map((word) => (
+            {getThreeWords().map((word, idx) => (
               <button
+                key={idx}
                 onClick={() => {
                   updateData(data, selectWord(word));
                 }}
@@ -127,7 +128,12 @@ export const StraightLines = ({ history }: PropType) => {
                   {guess.player}: {guess.word}{' '}
                   <span
                     className={styles.approveWord}
-                    onClick={() => updateData(data, guessWord(guess.player, data.word))}
+                    onClick={() => {
+                      const confirmed = window.confirm(
+                        `Is ${guess.player}'s word "${data.word}" the same as "${data.word}"?`,
+                      );
+                      if (confirmed) updateData(data, guessWord(guess.player, data.word));
+                    }}
                   >
                     ✔️
                   </span>
