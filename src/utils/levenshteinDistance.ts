@@ -1,4 +1,4 @@
-export const levenshteinDistance = (a: string, b: string) => {
+export const levenshteinDistance = (a: string | any[], b: string | any[]) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
@@ -14,7 +14,13 @@ export const levenshteinDistance = (a: string, b: string) => {
   }
   for (i = 1; i <= b.length; i++) {
     for (j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+      let same = false;
+      if (typeof a === 'string' && typeof b === 'string') {
+        same = b.charAt(i - 1) === a.charAt(j - 1);
+      } else {
+        same = b[i - 1] === a[j - 1];
+      }
+      if (same) {
         matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(

@@ -8,6 +8,7 @@ import { Categories } from './games/categories/categories';
 import { OnlyOne } from './games/onlyOne/onlyOne';
 import { ArtistSF } from './games/artistSF/artistSF';
 import { StraightLines } from './games/straightLines/straightLines';
+import { Sequencing } from './games/sequencing/sequencing';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route exact path='/onlyone' render={(props) => <OnlyOne {...props} />}></Route>
         <Route exact path='/artistsf' render={(props) => <ArtistSF {...props} />}></Route>
         <Route exact path='/straightlines' render={(props) => <StraightLines {...props} />}></Route>
+        <Route exact path='/sequencing' render={(props) => <Sequencing {...props} />}></Route>
       </Switch>
     </Router>
   );

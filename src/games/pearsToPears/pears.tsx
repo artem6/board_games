@@ -129,7 +129,7 @@ export const Pears = ({ history }: PropType) => {
           />
         </>
       ) : null}
-      {stage === 'waiting' ? <GameLobby gameCode={gameName} /> : null}
+      {stage === 'waiting' ? <GameLobby gameCode={gameName} gameType={data.gameType} /> : null}
       {stage === 'waiting' && isLeader ? (
         <button
           onClick={() => {

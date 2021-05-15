@@ -1,0 +1,50 @@
+.enterWord {
+  width: 200px;
+  font-size: 20px;
+  padding: 10px;
+  margin: 4px;
+  margin: 30px;
+}
+
+.genericContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 60px auto;
+}
+
+.roundResultsContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.roundResultsContainer button {
+  margin: 20px;
+}
+
+.sequenceChip {
+  border: 1px solid #ccc;
+  padding: 8px;
+  min-width: 100px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.dropTarget {
+  padding: 16px;
+}
+.dropTargetHover {
+  padding: 56px;
+}
+
+.resultsChip {
+  border: 1px solid #ccc;
+  padding: 8px;
+  min-width: 80px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 8px;
+}

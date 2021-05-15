@@ -75,7 +75,7 @@ export const StraightLines = ({ history }: PropType) => {
         </>
       ) : null}
 
-      {stage === 'waiting' ? <GameLobby gameCode={gameName} /> : null}
+      {stage === 'waiting' ? <GameLobby gameCode={gameName} gameType={data.gameType} /> : null}
 
       {stage === 'waiting' && isLeader ? (
         <button onClick={() => updateData(data, startRound)}>Start Game</button>
