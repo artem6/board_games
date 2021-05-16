@@ -1,12 +1,13 @@
 import { levenshteinDistance } from "./levenshteinDistance";
 
-export const distanceWithMoves = (arr1:any[], arr2:any[], moves = 0):number => {
+export const distanceWithMoves = (arr1:any[], arr2:any[], moves = 0):{ dist: number, errors: string[] } => {
   let dist = levenshteinDistance(arr1, arr2);
-  if (moves > arr1.length) return dist;
-  if (dist === 0) return dist;
+  if (moves > arr1.length) return { dist, errors: [] };
+  if (dist === 0) return { dist, errors: [] };
  
   let minDist = dist;
   let minArr = arr1;
+  let errors: string[] = [];
 
   for (let i = 0; i < arr1.length; i++) {
     for (let j = 0; j <= arr1.length; j++) {
@@ -21,14 +22,17 @@ export const distanceWithMoves = (arr1:any[], arr2:any[], moves = 0):number => {
       if (dist < minDist) {
         minDist = dist;
         minArr = tempArr;
+        errors = [arr1[i]];
       }
     }
   }
 
-  return Math.min(
-    minDist,
-    distanceWithMoves(minArr, arr2, moves + 1) + 1
-  );
+  let { dist: dist2, errors: errors2 } = distanceWithMoves(minArr, arr2, moves + 1);
+  dist2++;
+  errors2 = [...errors2, ...errors];
+
+  if (dist <= dist2) return { dist, errors }
+  else return { dist: dist2, errors: errors2 };
 }
 
 // const tests = [

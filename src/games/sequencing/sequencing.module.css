@@ -32,6 +32,12 @@
   display: inline-block;
   white-space: nowrap;
 }
+.sequenceButtons {
+  padding: 8px;
+  width: 30px;
+  display: inline-block;
+  cursor: pointer;
+}
 
 .dropTarget {
   padding: 16px;

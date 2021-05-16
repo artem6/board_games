@@ -158,7 +158,7 @@ export const Sequencing = ({ history }: PropType) => {
             </div>
             <div>Guess the Sequence:</div>
             <div className={styles.genericContainer}>
-              <div>Lowest</div>
+              <div>Highest</div>
               <div
                 onDrop={onDrop}
                 onDragOver={onDragOver(0)}
@@ -169,28 +169,30 @@ export const Sequencing = ({ history }: PropType) => {
                   ? styles.dropTargetHover : styles.dropTarget}
               />
               {myOrder.map((player, idx) => ([
-                <div
-                  key={player}
-                  className={styles.sequenceChip}
-                  onDragStart={onDragStart(player)}
-                  onDragEnd={onDragEnd}
-                  draggable
-                >
+                <div>
                   {idx !== 0 ? (
-                    <span style={{padding: 8}} onClick={() => {
+                    <span className={styles.sequenceButtons} onClick={() => {
                       const newOrder = [...myOrder];
                       newOrder.splice(idx-1, 2, myOrder[idx], myOrder[idx-1]);
                       setMyOrder(newOrder);
                     }}>⬆️</span>
-                  ) : <span />}
-                  {player}
+                  ) : <span className={styles.sequenceButtons} />}
+                  <div
+                    key={player}
+                    className={styles.sequenceChip}
+                    onDragStart={onDragStart(player)}
+                    onDragEnd={onDragEnd}
+                    draggable
+                  >
+                    {player}
+                  </div>
                   {idx !== myOrder.length - 1 ? (
-                    <span style={{padding: 8}} onClick={() => {
+                    <span className={styles.sequenceButtons} onClick={() => {
                       const newOrder = [...myOrder];
                       newOrder.splice(idx, 2, myOrder[idx+1], myOrder[idx]);
                       setMyOrder(newOrder);
                     }}>⬇️</span>
-                  ) : <span />}
+                  ) : <span className={styles.sequenceButtons} />}
                 </div>,
                 <div
                   key={idx}
@@ -204,12 +206,12 @@ export const Sequencing = ({ history }: PropType) => {
                     ? styles.dropTargetHover : styles.dropTarget}
                 />
               ]))}
-              <div>Highest</div>
+              <div>Lowest</div>
             </div>
             <div>
               <button
                 onClick={() => {
-                  updateData(data, submitMyAnswers(playerName, parseInt(myAnswer), myOrder));
+                  updateData(data, submitMyAnswers(playerName, parseFloat(myAnswer), [...myOrder].reverse()));
                   setMyAnswer('');
                   setMyOrder(data.players)
                 }}
@@ -238,16 +240,22 @@ export const Sequencing = ({ history }: PropType) => {
           <br />
           <div>
             {Object.keys(data.playerOrderGuess).map(player => {
+              const score = calcScore(data, player);
               return (
                 <div>
                   <div>
                     <br />
                     <b>{player}</b>{' '}
-                    ({calcScore(data, player)} points)
+                    ({score.points} points)
                   </div>
                   <div>
                     {data.playerOrderGuess[player].map(player => (
-                      <span className={styles.resultsChip}>{player}</span>
+                      <span 
+                        className={styles.resultsChip}
+                        style={{ background: score.errors.indexOf(player) !== -1 ? 'red' : undefined }}
+                      >
+                        {player}
+                      </span>
                     ))}
                   </div>
                 </div>

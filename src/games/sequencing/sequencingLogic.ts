@@ -45,11 +45,15 @@ export const calcScore = (data: SequencingData, player: string) => {
 
   const allCorrectOrders = generateSortPermutations(orderData);
 
-  let maxScore = 0;
+  let maxScore = { points: 0, errors: [] as string[] };
 
   allCorrectOrders.forEach(correctOrder => {
-    const score = data.players.length - distanceWithMoves(correctOrder, data.playerOrderGuess[player]);
-    if (score > maxScore) maxScore = score;
+    const score = {
+      ...distanceWithMoves(correctOrder, data.playerOrderGuess[player]),
+      points: 0,
+    };
+    score.points = data.players.length - score.dist;
+    if (score.points > maxScore.points) maxScore = score;
   })
 
   return maxScore;
@@ -62,7 +66,7 @@ export const startRound = (data: SequencingData) => {
   // add points
   Object.keys(data.playerAnswer).forEach(player => {
     data.playerScore[player] = data.playerScore[player] || 0;
-    data.playerScore[player] += calcScore(data, player);
+    data.playerScore[player] += calcScore(data, player).points;
   })
 
   // reset the board
