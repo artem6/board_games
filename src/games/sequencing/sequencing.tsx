@@ -252,7 +252,7 @@ export const Sequencing = ({ history }: PropType) => {
                     {data.playerOrderGuess[player].map(player => (
                       <span 
                         className={styles.resultsChip}
-                        style={{ background: score.errors.indexOf(player) !== -1 ? 'red' : undefined }}
+                        style={{ background: score.errors.indexOf(player) !== -1 && 1 > 2 ? 'red' : undefined }}
                       >
                         {player}
                       </span>

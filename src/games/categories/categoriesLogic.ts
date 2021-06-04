@@ -105,7 +105,7 @@ const categories = [
   `celebrities`,
   `things to do with leftovers`,
   `reptiles / amphibians`,
-  `rfads`,
+  `fads`,
   `leisure activities`,
   `things people can be allergic to`,
   `restaurants`,
